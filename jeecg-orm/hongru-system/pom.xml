@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.hongru</groupId>
+        <artifactId>hongru-parent</artifactId>
+        <version>1.0</version>
+    </parent>
+    <artifactId>hongru-system</artifactId>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.hongru</groupId>
+            <artifactId>hongru-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+        </dependency>
+    </dependencies>
+
+
+    <repositories>
+        <repository>
+            <id>aliyun</id>
+            <name>aliyun Repository</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <build>
+        <finalName>bishu-server</finalName>
+        <plugins>
+            <plugin>
+                <groupId>io.repaint.maven</groupId>
+                <artifactId>tiles-maven-plugin</artifactId>
+                <version>2.19</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <tiles>
+                        <tile>org.avaje.tile:java-compile:1.1</tile>
+                        <!-- other tiles ... -->
+                        <tile>io.ebean.tile:enhancement:12.15.0</tile>
+                    </tiles>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!--微服务模式下修改为true,跳过此打包插件，否则微服务模块无法引用-->
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
