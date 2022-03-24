@@ -392,7 +392,7 @@ Jeecg-Boot低代码开发平台，可以应用在任何J2EE项目的开发中，
 
 如果觉得还不错，请作者喝杯咖啡吧 ☺
 
-![](https://static.oschina.net/uploads/img/201903/08155608_0EFX.png)
+![](%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220324102719.jpg)
 
 
 
