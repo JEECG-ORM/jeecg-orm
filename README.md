@@ -12,34 +12,34 @@ JEECG ORM 低代码开发平台（前后端分离版本）
 -----------------------------------
 
 
-JeecgORM 是一款基于代码生成器的`低代码平台`！前后端分离架构 SpringBoot2.x，SpringCloud，Ant Design&Vue，Mybatis-plus，Shiro，JWT，支持微服务。强大的代码生成器让前后端代码一键生成，实现低代码开发!  帮助解决Java项目70%的重复工作，让开发更多关注业务。既能快速提高效率，节省研发成本，同时又不失灵活性！
+Jeecg-orm 是一款基于代码生成器的`低代码平台`！前后端分离架构 SpringBoot2.x，SpringCloud，Ant Design&Vue，Mybatis-plus，Shiro，JWT，支持微服务。强大的代码生成器让前后端代码一键生成，实现低代码开发!  帮助解决Java项目70%的重复工作，让开发更多关注业务。既能快速提高效率，节省研发成本，同时又不失灵活性！
 
 适用项目
 -----------------------------------
-Jeecg-Boot低代码开发平台，可以应用在任何J2EE项目的开发中，尤其适合CMS项目、企业信息管理系统（MIS）、内部办公系统（OA）、企业资源计划系统（ERP）、客户关系管理系统（CRM）等，其半智能手工Merge的开发方式，可以显著提高开发效率70%以上，极大降低开发成本。
+Jeecg-orm低代码开发平台，可以应用在任何J2EE项目的开发中，尤其适合CMS项目、企业信息管理系统（MIS）、内部办公系统（OA）、企业资源计划系统（ERP）、客户关系管理系统（CRM）等，其半智能手工Merge的开发方式，可以显著提高开发效率70%以上，极大降低开发成本。
 
 
 
 技术文档
 -----------------------------------
 
-- 技术官网：  [http://www.jeecg.com](http://www.jeecg.com)
+- 技术官网：  [http://www.jeecgorm.com](http://www.jeecgorm.com)
 
-- 在线演示 ： [http://boot.jeecg.com](http://boot.jeecg.com)
+- 在线演示 ： [http://jo.jeecgorm.com](http://jo.jeecgorm.com)
 
-- 开发文档：  [http://doc.jeecg.com](http://doc.jeecg.com)
+- 开发文档：  [http://doc.jeecgorm.com](http://doc.jeecgorm.com)
 
-- 入门视频： [https://space.bilibili.com/454617261/channel/series](https://space.bilibili.com/454617261/channel/series)
+- 入门视频： 暂无
 
-- 新手指南： [快速入门](http://www.jeecg.com/doc/quickstart)  |   [常见问题 ](http://www.jeecg.com/doc/qa)  |   [技术支持](http://jeecg.com/doc/help) |  [1分钟体验低代码](https://my.oschina.net/jeecg/blog/3083313)
+- 新手指南： 暂无
 
-- 微服务开发：  [单体切换为微服务](http://doc.jeecg.com/2043906)
+- 微服务开发： 暂无
 
-- QQ交流群 ： ⑤860162132、683903138(VUE3版)、~~④774126647(满)、③816531124(满)、②769925425(满)、①284271917(满)~~
+- 微信交流群 ：18813066492
 
-为什么选择JEECG-BOOT?
+为什么选择JEECG-ORM?
 -----------------------------------
-* 1.采用最新主流前后分离框架（Springboot+Mybatis+antd），容易上手; 代码生成器依赖性低,灵活的扩展能力，可快速实现二次开发;
+* 1.采用最新主流前后分离框架（Springboot+JPA(EbeanORM)+antd），容易上手; 代码生成器依赖性低,灵活的扩展能力，可快速实现二次开发;
 * 2.支持微服务SpringCloud Alibaba(Nacos、Gateway、Sentinel、Skywalking)，提供切换机制支持单体和微服务自由切换
 * 3.开发效率高,采用代码生成器，单表、树列表、一对多、一对一等数据模型，增删改查功能一键生成，菜单配置直接使用；
 * 4.代码生成器提供强大模板机制，支持自定义模板，目前提供四套风格模板（单表两套、树模型一套、一对多三套）
