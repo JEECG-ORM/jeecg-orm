@@ -1,7 +1,7 @@
 server:
   port: 8080
   servlet:
-    context-path: /hongru-antdv
+    context-path: /jeecg-orm
 logging:
   level:
     io:
