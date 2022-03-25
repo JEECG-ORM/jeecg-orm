@@ -34,7 +34,7 @@
         </repository>
     </repositories>
     <build>
-        <finalName>bishu-server</finalName>
+        <finalName>jeecgorm-system</finalName>
         <plugins>
             <plugin>
                 <groupId>io.repaint.maven</groupId>
