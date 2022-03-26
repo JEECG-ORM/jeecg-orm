@@ -1,11 +1,11 @@
-package ${packageName}.controller;
+package com.hongru.cms.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hongru.ebean.StatusDto;
 import com.hongru.ebean.SortNoDto;
 import com.hongru.ebean.EbeanUtil;
 import com.hongru.ebean.HongRuPage;
-import ${packageName}.entity.${className};
+import com.hongru.cms.entity.CmsCourseApply;
 import com.hongru.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -25,60 +25,53 @@ import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
 * @Date 2022/1/26 15:12
 */
 @RestController
-@RequestMapping("/${className?replace("([a-z])([A-Z]+)","$1/$2","r")?lower_case}")
+@RequestMapping("/cms/course/apply")
 @Slf4j
-@Api(tags = "${tableComment}管理")
-public class ${className}Controller {
+@Api(tags = "健康课堂报名管理")
+public class CmsCourseApplyController {
 
     @PostMapping("/list")
     @ApiOperation("列表")
     @ApiOperationSupport(params = @DynamicParameters(properties = {
-<#if tableColumnList?exists>
-    <#list tableColumnList as model>
-        <#if model.isQuery>
-    @DynamicParameter(name = "${model.javaField}", value = "${model.columnComment}",example = "${model.columnExample}"),
-        </#if>
-    </#list>
-</#if>
     }))
-    public Result<HongRuPage<${className}>> queryPageList(@RequestBody JSONObject searchObj) {
-        return Result.OK(EbeanUtil.pageList(searchObj, ${className}.class));
+    public Result<HongRuPage<CmsCourseApply>> queryPageList(@RequestBody JSONObject searchObj) {
+        return Result.OK(EbeanUtil.pageList(searchObj, CmsCourseApply.class));
     }
 
     @ApiOperation("添加")
-    @ApiOperationSupport(ignoreParameters = {"${className?uncap_first}.id"})
+    @ApiOperationSupport(ignoreParameters = {"cmsCourseApply.id"})
     @PostMapping(value = "/add")
-    public Result<${className}> add(@RequestBody ${className} ${className?uncap_first}) {
-        ${className?uncap_first}.save();
+    public Result<CmsCourseApply> add(@RequestBody CmsCourseApply cmsCourseApply) {
+        cmsCourseApply.save();
         return Result.OK("添加成功");
     }
 
     @PostMapping(value = "/edit")
-    public Result<${className}> edit(@RequestBody ${className} ${className?uncap_first}) {
-        ${className?uncap_first}.update();
+    public Result<CmsCourseApply> edit(@RequestBody CmsCourseApply cmsCourseApply) {
+        cmsCourseApply.update();
         return Result.OK("修改成功");
     }
 
     @DeleteMapping(value = "/delete")
     public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
-        EbeanUtil.delete(id, ${className}.class);
+        EbeanUtil.delete(id, CmsCourseApply.class);
         return Result.OK("删除成功");
     }
     @DeleteMapping(value = "/deleteBatch")
     public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
-        EbeanUtil.deleteBatch(ids, ${className}.class);
+        EbeanUtil.deleteBatch(ids, CmsCourseApply.class);
         return Result.OK("批量删除成功");
     }
 
     @PostMapping(value="/field/{field}")
     public Result<?> field(@PathVariable String field, @RequestBody StatusDto statusDto) {
-        EbeanUtil.field(field,statusDto,${className}.class);
+        EbeanUtil.field(field,statusDto,CmsCourseApply.class);
         return Result.OK();
     }
 
     @PostMapping(value="/sortNo")
     public Result<?> sortNo(@RequestBody SortNoDto sortNoDto) {
-        EbeanUtil.sortNo(sortNoDto,${className}.class);
+        EbeanUtil.sortNo(sortNoDto,CmsCourseApply.class);
     return Result.OK();
     }
 

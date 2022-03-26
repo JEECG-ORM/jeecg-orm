@@ -1,4 +1,13 @@
 <template>
+
+  <j-modal
+    title="报名信息"
+    :visible="visible"
+    :fullscreen.sync="fullscreen"
+    @close="close"
+    @cancel="close"
+    :footer="footer"
+  >
     <a-card :bordered="false">
         <!-- 查询区域 -->
         <div class="table-page-search-wrapper">
@@ -63,11 +72,6 @@
               更多 <a-icon type="down"/>
             </a>
             <a-menu slot="overlay">
-                 <#list subTableList as model>
-              <a-menu-item>
-                    <a @click="handle${model.className}(record)">${model.tableComment}</a>
-              </a-menu-item>
-                 </#list>
               <a-menu-item>
                 <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
                   <a>删除</a>
@@ -76,62 +80,59 @@
             </a-menu>
           </a-dropdown>
         </span>
-                <#list tableColumnList as model>
-                    <#if model.isList&&model.htmlType="switch">
-        <span slot="${model.javaField}_switch" slot-scope="text, record">
-            <a-switch checked-children="${model.dict.dictItems[0].itemText}" un-checked-children="${model.dict.dictItems[1].itemText}" v-model="record.${model.javaField}"  @change="(checked)=>handleField('${model.javaField}',checked,record.id)"></a-switch>
-        </span>
-                    </#if>
-                </#list>
 
 
             </a-table>
         </div>
         <!-- table区域-end -->
-        <${modalName?lower_case}-modal ref="modalForm" @ok="modalFormOk"></${modalName?lower_case}-modal>
-    <#list subTableList as model>
-        <${model.modalName?replace("([a-z])([A-Z]+)","$1-$2","r")?lower_case}-list ref="courseApplyList"></${model.modalName?replace("([a-z])([A-Z]+)","$1-$2","r")?lower_case}-list>
-    </#list>
-
-
+        <course-apply-modal ref="modalForm" @ok="modalFormOk">
+    </course-apply-modal>
     </a-card>
+  </j-modal>
 </template>
 
 <script>
     import { getAction, postAction } from '@api/manage'
     import {queryColumnList} from '@/api/api'
     import {JeecgListMixin} from '@/mixins/JeecgListMixin'
-    import ${modalName}Modal from './${modalName}Modal'
-    <#list subTableList as model>
-    import ${model.modalName}Modal from './${model.modalName}Modal'
-    </#list>
+    import CourseApplyModal from './CourseApplyModal'
+    import CourseList from './CourseList'
     export default {
-        name: "${modalName}List",
+        name: "CourseApplyList",
         mixins: [JeecgListMixin],
         components: {
-            ${modalName}Modal,
-            <#list subTableList as model>
-            ${model.modalName}Modal,
-            </#list>
+            CourseApplyModal,CourseList
         },
         data() {
             return {
+                visible:false,
+                footer:false,
+                fullscreen:true,
                 queryParam: {},
                 queryColumns: [],
                 columns: [],
                 url: {
-                    list: "/${className?replace("([a-z])([A-Z]+)","$1/$2","r")?lower_case}/list",
-                    delete: "/${className?replace("([a-z])([A-Z]+)","$1/$2","r")?lower_case}/delete",
-                    field: "/${className?replace("([a-z])([A-Z]+)","$1/$2","r")?lower_case}/field",
+                    list: "/cms/course/apply/list",
+                    delete: "/cms/course/apply/delete",
+                    field: "/cms/course/apply/field",
                 }
             }
         },
         created(){
-            this.loadColumn();
+            //this.loadColumn();
         },
         methods:{
+          close() {
+            this.visible = false;
+          },
+          getMainId(mainId){
+            this.visible=true;
+            this.queryParam.courseId=mainId;
+            console.log(mainId)
+            this.loadColumn();
+          },
             loadColumn() {
-                queryColumnList({ tableId: "${id}",pageNo:1,pageSize:100,order:"asc",column:"sortNo" }).then(res => {
+                queryColumnList({ tableId: "cc2ade9c74d44bac9722ce44a6d6def8",pageNo:1,pageSize:100,order:"asc",column:"sortNo" }).then(res => {
                     if (res.success) {
                         this.columns = []
                         let columns = res.result.records
@@ -172,14 +173,6 @@
                     this.loading = false
                 })
             },
-            <#list tableColumnList as model>
-            <#if model.isQuery&&model.htmlType="date">
-            on${model.javaField}Change: function (value, dateString) {
-                this.queryParam.${model.javaField}_begin=dateString[0];
-                this.queryParam.${model.javaField}_end=dateString[1];
-            },
-            </#if>
-            </#list>
         }
 
 

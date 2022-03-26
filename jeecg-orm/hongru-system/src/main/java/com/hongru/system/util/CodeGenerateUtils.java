@@ -45,7 +45,14 @@ public class CodeGenerateUtils {
 
     public void init(String tableId) {
         table = DB.find(GenTable.class).where().idEq(tableId).findOne();
-
+        if (2 == table.getTableType()) {
+            List<GenTable> subTableList = DB.find(GenTable.class).where().eq("mainTable", table.getTableName()).findList();
+            for (GenTable genTable : subTableList) {
+                String modalName = getModalName(genTable);
+                genTable.setModalName(modalName);
+            }
+            table.setSubTableList(subTableList);
+        }
         List<GenTableColumn> tableColumnList = table.getTableColumnList();
         List<SysDict> dicts = DB.find(SysDict.class).findList();
         Map<String, SysDict> dictMap = dicts.stream().collect(Collectors.toMap(SysDict::getDictCode, e -> e));
@@ -55,12 +62,17 @@ public class CodeGenerateUtils {
             }
         }
         table.setTableColumnList(tableColumnList);
-        targetPath = projectPath + "/" + table.getModuleName() + "/src/main/java/" + table.getPackageName().replaceAll("\\.", "/");
+        targetPath = projectPath + "/jeecg-orm/" + table.getModuleName() + "/src/main/java/" + table.getPackageName().replaceAll("\\.", "/");
         tableName = table.getTableName();
         tablePrefix = table.getTableName().split("_")[0];
         businessName = tableName.split("_")[1];
         modalName = table.getClassName().replace(captureName(tablePrefix), "");
         table.setModalName(modalName);
+    }
+
+    public String getModalName(GenTable genTable) {
+        String tablePrefix = genTable.getTableName().split("_")[0];
+        return genTable.getClassName().replace(captureName(tablePrefix), "");
     }
 
     /**
@@ -99,7 +111,7 @@ public class CodeGenerateUtils {
      */
     private void generateModalVueFile(String templateName) throws Exception {
         // 文件路径
-        String path = projectPath + "/hongru-ant-design-vue/src/views/" + tablePrefix + "/" + businessName + "/";
+        String path = projectPath + "/ant-design-vue-jo/src/views/" + tablePrefix + "/" + businessName + "/";
         // 初始化文件路径
         initFileDir(path);
         // 文件后缀
@@ -120,7 +132,7 @@ public class CodeGenerateUtils {
      */
     private void generateListVueFile(String templateName) throws Exception {
         // 文件路径
-        String path = projectPath + "/hongru-ant-design-vue/src/views/" + tablePrefix + "/" + businessName + "/";
+        String path = projectPath + "/ant-design-vue-jo/src/views/" + tablePrefix + "/" + businessName + "/";
         // 初始化文件路径
         initFileDir(path);
         // 文件后缀

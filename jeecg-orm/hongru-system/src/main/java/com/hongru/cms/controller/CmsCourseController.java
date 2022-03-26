@@ -66,11 +66,13 @@ public class CmsCourseController {
         EbeanUtil.deleteBatch(ids, CmsCourse.class);
         return Result.OK("批量删除成功");
     }
+
     @PostMapping(value="/field/{field}")
     public Result<?> field(@PathVariable String field, @RequestBody StatusDto statusDto) {
         EbeanUtil.field(field,statusDto,CmsCourse.class);
         return Result.OK();
     }
+
     @PostMapping(value="/sortNo")
     public Result<?> sortNo(@RequestBody SortNoDto sortNoDto) {
         EbeanUtil.sortNo(sortNoDto,CmsCourse.class);

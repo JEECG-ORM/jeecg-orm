@@ -63,6 +63,9 @@
               更多 <a-icon type="down"/>
             </a>
             <a-menu slot="overlay">
+                               <a-menu-item>
+                    <a @click="handleCmsCourseApply(record)">健康课堂报名</a>
+              </a-menu-item>
               <a-menu-item>
                 <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
                   <a>删除</a>
@@ -71,7 +74,7 @@
             </a-menu>
           </a-dropdown>
         </span>
-                        <span slot="isHot_switch" slot-scope="text, record">
+        <span slot="isHot_switch" slot-scope="text, record">
             <a-switch checked-children="是" un-checked-children="否" v-model="record.isHot"  @change="(checked)=>handleField('isHot',checked,record.id)"></a-switch>
         </span>
         <span slot="status_switch" slot-scope="text, record">
@@ -82,8 +85,10 @@
             </a-table>
         </div>
         <!-- table区域-end -->
-        <course-modal ref="modalForm" @ok="modalFormOk">
-    </course-modal>
+        <course-modal ref="modalForm" @ok="modalFormOk"></course-modal>
+        <course-list ref="courseApplyList"></course-list>
+
+
     </a-card>
 </template>
 
@@ -92,12 +97,13 @@
     import {queryColumnList} from '@/api/api'
     import {JeecgListMixin} from '@/mixins/JeecgListMixin'
     import CourseModal from './CourseModal'
-
+    import CourseModal from './CourseModal'
     export default {
         name: "CourseList",
         mixins: [JeecgListMixin],
         components: {
-            CourseModal
+            CourseModal,
+            CourseModal,
         },
         data() {
             return {

@@ -21,6 +21,8 @@ public class GenTable extends HongRuEntity {
      */
     private String tableName;
 
+    private Integer tableType;
+
     /**
      * 表描述
      */
@@ -61,6 +63,9 @@ public class GenTable extends HongRuEntity {
      */
     private String options;
 
+
+    private String mainTable;
+
     /**
      * 备注
      */
@@ -74,6 +79,9 @@ public class GenTable extends HongRuEntity {
     private List<GenTableColumn> tableColumnList;
 
     @Transient
+    private List<GenTable> subTableList;
+
+    @Transient
     private String modalName;
 
     @Override
@@ -81,7 +89,7 @@ public class GenTable extends HongRuEntity {
         String className = StringUtil.underline2Camel(this.getTableName(), true);
         this.setClassName(className);
         this.setPackageName("com.hongru." + this.getTableName().split("_")[0]);
-        this.setModuleName("hongru-system");
+        this.setModuleName("jeecg-orm");
         super.save();
     }
 }
