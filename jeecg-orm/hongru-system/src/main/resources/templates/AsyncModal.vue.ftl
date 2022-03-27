@@ -44,10 +44,10 @@
     </a-drawer>
 </template>
 <script>
-    import {add${modalName}, edit${modalName},duplicateCheck,queryColumnList} from '@/api/api'
+    import {add${dePrefixClassName}, edit${dePrefixClassName},duplicateCheck,queryColumnList} from '@/api/api'
     import Area from '@/components/_util/Area'
     export default {
-        name: "${modalName}Modal",
+        name: "${dePrefixClassName}Modal",
         data() {
             return {
                 modalWidth: 800,
@@ -144,9 +144,9 @@
                         that.confirmLoading = true;
                         let obj;
                         if (!this.model.id) {
-                            obj = add${modalName}(this.model);
+                            obj = add${dePrefixClassName}(this.model);
                         } else {
-                            obj = edit${modalName}(this.model);
+                            obj = edit${dePrefixClassName}(this.model);
                         }
                         obj.then((res) => {
                             if (res.success) {

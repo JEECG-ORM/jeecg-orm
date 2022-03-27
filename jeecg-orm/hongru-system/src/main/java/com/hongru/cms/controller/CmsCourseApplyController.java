@@ -27,7 +27,7 @@ import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
 @RestController
 @RequestMapping("/cms/course/apply")
 @Slf4j
-@Api(tags = "健康课堂报名管理")
+@Api(tags = "健康课堂报名信息管理")
 public class CmsCourseApplyController {
 
     @PostMapping("/list")

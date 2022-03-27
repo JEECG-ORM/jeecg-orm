@@ -25,7 +25,7 @@ import com.hongru.aspect.annotation.Dict;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @Entity
-@ApiModel("健康课堂报名对象")
+@ApiModel("健康课堂报名信息对象")
 public class CmsCourseApply extends HongRuEntity {
 
     @ApiModelProperty(value = "健康课堂ID",example = "")
@@ -35,6 +35,7 @@ public class CmsCourseApply extends HongRuEntity {
     @ApiModelProperty(value = "年龄",example = "")
     private String age;
     @ApiModelProperty(value = "性别",example = "")
+    @Dict(dicCode = "sex")
     private String sex;
     @ApiModelProperty(value = "手机号",example = "")
     private String phone;

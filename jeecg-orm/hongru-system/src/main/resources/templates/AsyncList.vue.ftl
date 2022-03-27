@@ -1,4 +1,14 @@
 <template>
+    <#if tableType==3>
+    <j-modal
+            title="${tableComment}"
+            :visible="visible"
+            :fullscreen.sync="fullscreen"
+            @close="close"
+            @cancel="close"
+            :footer="footer"
+    >
+        </#if>
     <a-card :bordered="false">
         <!-- 查询区域 -->
         <div class="table-page-search-wrapper">
@@ -63,9 +73,9 @@
               更多 <a-icon type="down"/>
             </a>
             <a-menu slot="overlay">
-                 <#list subTableList as model>
+                 <#list subTableList as subModel>
               <a-menu-item>
-                    <a @click="handle${model.className}(record)">${model.tableComment}</a>
+                    <a @click="handle${subModel.dePrefixClassName}(record)">${subModel.tableComment}</a>
               </a-menu-item>
                  </#list>
               <a-menu-item>
@@ -88,34 +98,41 @@
             </a-table>
         </div>
         <!-- table区域-end -->
-        <${modalName?lower_case}-modal ref="modalForm" @ok="modalFormOk"></${modalName?lower_case}-modal>
-    <#list subTableList as model>
-        <${model.modalName?replace("([a-z])([A-Z]+)","$1-$2","r")?lower_case}-list ref="courseApplyList"></${model.modalName?replace("([a-z])([A-Z]+)","$1-$2","r")?lower_case}-list>
+        <${dePrefixClassName?replace("([a-z])([A-Z]+)","$1-$2","r")?lower_case}-modal ref="modalForm" @ok="modalFormOk"></${dePrefixClassName?replace("([a-z])([A-Z]+)","$1-$2","r")?lower_case}-modal>
+    <#list subTableList as subModel>
+        <${subModel.dePrefixClassName?replace("([a-z])([A-Z]+)","$1-$2","r")?lower_case}-list ref="${subModel.dePrefixClassName}List"></${subModel.dePrefixClassName?replace("([a-z])([A-Z]+)","$1-$2","r")?lower_case}-list>
     </#list>
 
 
     </a-card>
+    </j-modal>
+
 </template>
 
 <script>
     import { getAction, postAction } from '@api/manage'
     import {queryColumnList} from '@/api/api'
     import {JeecgListMixin} from '@/mixins/JeecgListMixin'
-    import ${modalName}Modal from './${modalName}Modal'
-    <#list subTableList as model>
-    import ${model.modalName}Modal from './${model.modalName}Modal'
+    import ${dePrefixClassName}Modal from './${dePrefixClassName}Modal'
+    <#list subTableList as subModel>
+    import ${subModel.dePrefixClassName}List from './${subModel.dePrefixClassName}List'
     </#list>
     export default {
-        name: "${modalName}List",
+        name: "${dePrefixClassName}List",
         mixins: [JeecgListMixin],
         components: {
-            ${modalName}Modal,
-            <#list subTableList as model>
-            ${model.modalName}Modal,
+            ${dePrefixClassName}Modal,
+            <#list subTableList as subModel>
+            ${subModel.dePrefixClassName}List,
             </#list>
         },
         data() {
             return {
+                <#if tableType==3>
+                visible:false,
+                footer:false,
+                fullscreen:true,
+                </#if>
                 queryParam: {},
                 queryColumns: [],
                 columns: [],
@@ -127,9 +144,25 @@
             }
         },
         created(){
+            <#if tableType!=3>
             this.loadColumn();
+            </#if>
         },
         methods:{
+            <#if tableType==3>
+            close() {
+                this.visible = false;
+            },
+            getMainId(mainId){
+                this.visible=true;
+                <#list tableColumnList as model>
+                <#if model.mainTable??>
+                this.queryParam.${model.javaField}=mainId;
+                </#if>
+                </#list>
+                this.loadColumn();
+            },
+            </#if>
             loadColumn() {
                 queryColumnList({ tableId: "${id}",pageNo:1,pageSize:100,order:"asc",column:"sortNo" }).then(res => {
                     if (res.success) {
@@ -138,19 +171,23 @@
                         this.queryColumns=columns;
                         for (let i = 0; i < columns.length; i++) {
                             if (columns[i].isList) {
+                                let dataIndex=columns[i].javaField;
+                                if(null!=columns[i].dictCode){
+                                    dataIndex+="_dictText"
+                                }
                                 let c = {
                                     title: columns[i].columnComment,
                                     align: 'center'
                                 }
                                 if (columns[i].htmlType === 'input' || columns[i].htmlType === 'date') {
-                                    c.dataIndex= '' + columns[i].javaField + ''
+                                    c.dataIndex= '' + dataIndex + ''
                                 }
                                 if (columns[i].htmlType === 'switch') {
                                     c.dataIndex= columns[i].javaField+'_switch';
                                     c.scopedSlots={customRender:columns[i].javaField+ '_switch'};
                                 }
                                 if (columns[i].htmlType === 'cat_tree') {
-                                    c.dataIndex= '' + columns[i].javaField + '_dictText'
+                                    c.dataIndex= '' + dataIndex + ''
                                 }
                                 if (columns[i].fieldLength !== 0) {
                                     c.width = columns[i].fieldLength
@@ -172,6 +209,11 @@
                     this.loading = false
                 })
             },
+            <#list subTableList as subModel>
+            handle${subModel.dePrefixClassName}: function(record){
+                this.$refs.${subModel.dePrefixClassName}List.getMainId(record.id);
+            }
+            </#list>
             <#list tableColumnList as model>
             <#if model.isQuery&&model.htmlType="date">
             on${model.javaField}Change: function (value, dateString) {

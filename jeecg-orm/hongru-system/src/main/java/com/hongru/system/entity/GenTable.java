@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -33,6 +34,7 @@ public class GenTable extends HongRuEntity {
      */
     private String className;
 
+    private String dePrefixClassName;
     /**
      * 使用的模板（crud单表操作 tree树表操作）
      */
@@ -79,10 +81,9 @@ public class GenTable extends HongRuEntity {
     private List<GenTableColumn> tableColumnList;
 
     @Transient
-    private List<GenTable> subTableList;
+    private List<GenTable> subTableList=new ArrayList<>();
 
-    @Transient
-    private String modalName;
+
 
     @Override
     public void save() {

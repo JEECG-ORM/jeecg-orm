@@ -1,13 +1,12 @@
 <template>
-
-  <j-modal
-    title="报名信息"
-    :visible="visible"
-    :fullscreen.sync="fullscreen"
-    @close="close"
-    @cancel="close"
-    :footer="footer"
-  >
+        <j-modal
+            title="健康课堂报名信息"
+            :visible="visible"
+            :fullscreen.sync="fullscreen"
+            @close="close"
+            @cancel="close"
+            :footer="footer"
+    >
     <a-card :bordered="false">
         <!-- 查询区域 -->
         <div class="table-page-search-wrapper">
@@ -85,10 +84,12 @@
             </a-table>
         </div>
         <!-- table区域-end -->
-        <course-apply-modal ref="modalForm" @ok="modalFormOk">
-    </course-apply-modal>
+        <course-apply-modal ref="modalForm" @ok="modalFormOk"></course-apply-modal>
+
+
     </a-card>
-  </j-modal>
+    </j-modal>
+
 </template>
 
 <script>
@@ -96,12 +97,11 @@
     import {queryColumnList} from '@/api/api'
     import {JeecgListMixin} from '@/mixins/JeecgListMixin'
     import CourseApplyModal from './CourseApplyModal'
-    import CourseList from './CourseList'
     export default {
         name: "CourseApplyList",
         mixins: [JeecgListMixin],
         components: {
-            CourseApplyModal,CourseList
+            CourseApplyModal,
         },
         data() {
             return {
@@ -119,18 +119,16 @@
             }
         },
         created(){
-            //this.loadColumn();
         },
         methods:{
-          close() {
-            this.visible = false;
-          },
-          getMainId(mainId){
-            this.visible=true;
-            this.queryParam.courseId=mainId;
-            console.log(mainId)
-            this.loadColumn();
-          },
+            close() {
+                this.visible = false;
+            },
+            getMainId(mainId){
+                this.visible=true;
+                this.queryParam.courseId=mainId;
+                this.loadColumn();
+            },
             loadColumn() {
                 queryColumnList({ tableId: "cc2ade9c74d44bac9722ce44a6d6def8",pageNo:1,pageSize:100,order:"asc",column:"sortNo" }).then(res => {
                     if (res.success) {
@@ -139,19 +137,23 @@
                         this.queryColumns=columns;
                         for (let i = 0; i < columns.length; i++) {
                             if (columns[i].isList) {
+                                let dataIndex=columns[i].javaField;
+                                if( !!columns[i].dictCode){
+                                    dataIndex+="_dictText"
+                                }
                                 let c = {
                                     title: columns[i].columnComment,
                                     align: 'center'
                                 }
                                 if (columns[i].htmlType === 'input' || columns[i].htmlType === 'date') {
-                                    c.dataIndex= '' + columns[i].javaField + ''
+                                    c.dataIndex= '' + dataIndex + ''
                                 }
                                 if (columns[i].htmlType === 'switch') {
                                     c.dataIndex= columns[i].javaField+'_switch';
                                     c.scopedSlots={customRender:columns[i].javaField+ '_switch'};
                                 }
                                 if (columns[i].htmlType === 'cat_tree') {
-                                    c.dataIndex= '' + columns[i].javaField + '_dictText'
+                                    c.dataIndex= '' + dataIndex + ''
                                 }
                                 if (columns[i].fieldLength !== 0) {
                                     c.width = columns[i].fieldLength

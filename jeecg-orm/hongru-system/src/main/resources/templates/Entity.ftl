@@ -33,8 +33,8 @@ public class ${className} extends HongRuEntity {
         <#if model.columnName!= 'id'&&model.columnName!= 'sort_no'&&model.columnName!= 'create_by'&&model.columnName!= 'create_time'&&model.columnName!= 'update_by'&&model.columnName!= 'update_time'&&model.columnName!= 'deleted'>
             <#if (model.javaType != 'Date') >
     @ApiModelProperty(value = "${model.columnComment}",example = "${model.columnExample}")
-    <#if (model.dictTable != '') >
-    @Dict(dictTable ="sys_category",dicText = "name",dicCode = "code")
+    <#if (model.dictCode != '') >
+    @Dict(dicCode = "${model.dictCode}"<#if (model.dictTable != '') > ,dictTable ="${dictTable}",dicText = "${dictText}"</#if>)
     </#if>
     private ${model.javaType} ${model.javaField};
             </#if>

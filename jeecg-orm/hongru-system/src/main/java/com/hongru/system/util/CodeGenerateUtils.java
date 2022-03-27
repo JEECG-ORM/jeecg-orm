@@ -36,10 +36,9 @@ public class CodeGenerateUtils {
     String tableName;
     String tablePrefix;
     String businessName;
-    String modalName;
 
     public static void main(String[] args) {
-        new CodeGenerateUtils().generateVueFile("4cdf92a7357e4d8095a9464516a391df");
+        new CodeGenerateUtils().generateVueFile("cc2ade9c74d44bac9722ce44a6d6def8");
     }
 
 
@@ -47,10 +46,6 @@ public class CodeGenerateUtils {
         table = DB.find(GenTable.class).where().idEq(tableId).findOne();
         if (2 == table.getTableType()) {
             List<GenTable> subTableList = DB.find(GenTable.class).where().eq("mainTable", table.getTableName()).findList();
-            for (GenTable genTable : subTableList) {
-                String modalName = getModalName(genTable);
-                genTable.setModalName(modalName);
-            }
             table.setSubTableList(subTableList);
         }
         List<GenTableColumn> tableColumnList = table.getTableColumnList();
@@ -66,13 +61,6 @@ public class CodeGenerateUtils {
         tableName = table.getTableName();
         tablePrefix = table.getTableName().split("_")[0];
         businessName = tableName.split("_")[1];
-        modalName = table.getClassName().replace(captureName(tablePrefix), "");
-        table.setModalName(modalName);
-    }
-
-    public String getModalName(GenTable genTable) {
-        String tablePrefix = genTable.getTableName().split("_")[0];
-        return genTable.getClassName().replace(captureName(tablePrefix), "");
     }
 
     /**
@@ -115,7 +103,7 @@ public class CodeGenerateUtils {
         // 初始化文件路径
         initFileDir(path);
         // 文件后缀
-        String suffix = modalName + "Modal.vue";
+        String suffix = table.getDePrefixClassName() + "Modal.vue";
         // 完整的文件路径
         String filePath = path + suffix;
         File indexVueFile = new File(filePath);
@@ -136,7 +124,7 @@ public class CodeGenerateUtils {
         // 初始化文件路径
         initFileDir(path);
         // 文件后缀
-        String suffix = modalName + "List.vue";
+        String suffix = table.getDePrefixClassName() + "List.vue";
         // 完整的文件路径
         String filePath = path + suffix;
         File indexVueFile = new File(filePath);

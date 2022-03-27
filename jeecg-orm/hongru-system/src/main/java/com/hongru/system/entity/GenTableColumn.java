@@ -53,10 +53,15 @@ public class GenTableColumn extends HongRuEntity implements Serializable {
      */
     private String columnLength;
 
+
     /**
      * 列示例值
      */
     private String columnExample;
+
+    private String mainTable;
+
+    private String mainField;
 
     /**
      * JAVA类型

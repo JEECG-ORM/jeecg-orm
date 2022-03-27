@@ -64,7 +64,7 @@
             </a>
             <a-menu slot="overlay">
                                <a-menu-item>
-                    <a @click="handleCmsCourseApply(record)">健康课堂报名</a>
+                    <a @click="handleCourseApply(record)">健康课堂报名</a>
               </a-menu-item>
               <a-menu-item>
                 <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
@@ -86,7 +86,7 @@
         </div>
         <!-- table区域-end -->
         <course-modal ref="modalForm" @ok="modalFormOk"></course-modal>
-        <course-list ref="courseApplyList"></course-list>
+        <course-apply-list ref="CourseApplyList"></course-apply-list>
 
 
     </a-card>
@@ -97,13 +97,13 @@
     import {queryColumnList} from '@/api/api'
     import {JeecgListMixin} from '@/mixins/JeecgListMixin'
     import CourseModal from './CourseModal'
-    import CourseModal from './CourseModal'
+    import CourseApplyList from './CourseApplyList'
     export default {
         name: "CourseList",
         mixins: [JeecgListMixin],
         components: {
             CourseModal,
-            CourseModal,
+            CourseApplyList,
         },
         data() {
             return {
@@ -163,6 +163,9 @@
                     this.loading = false
                 })
             },
+            handleCourseApply: function(record){
+                this.$refs.CourseApplyList.getMainId(record.id);
+            }
         }
 
 
