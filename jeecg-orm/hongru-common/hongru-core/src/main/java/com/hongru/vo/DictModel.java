@@ -22,6 +22,11 @@ public class DictModel implements Serializable{
 		this.text = text;
 	}
 
+	public DictModel(String value,String text,String code) {
+		this.value = value;
+		this.text = text;
+		this.code = code;
+	}
 	/**
 	 * 字典value
 	 */
@@ -30,6 +35,8 @@ public class DictModel implements Serializable{
 	 * 字典文本
 	 */
 	private String text;
+
+	private String code;
 
 	/**
 	 * 特殊用途： JgEditableTable

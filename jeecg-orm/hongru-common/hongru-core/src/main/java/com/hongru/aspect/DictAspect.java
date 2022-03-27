@@ -272,27 +272,19 @@ public class DictAspect {
             List<String> dictCodeList = Arrays.asList(dataListMap.keySet().toArray(new String[]{}));
             // 将不包含逗号的字典code筛选出来，因为带逗号的是表字典，而不是普通的数据字典
             List<String> filterDictCodes = dictCodeList.stream().filter(key -> !key.contains(",")).collect(Collectors.toList());
-            String dictCodes = String.join(",", filterDictCodes);
-            String values = String.join(",", needTranslData);
-            log.info("translateManyDict.dictCodes:" + dictCodes);
-            log.info("translateManyDict.values:" + values);
-            /*Map<String, List<DictModel>> manyDict = commonAPI.translateManyDict(dictCodes, values);
-            log.info("translateManyDict.result:" + manyDict);
-            for (String dictCode : manyDict.keySet()) {
-                List<DictModel> list = translText.computeIfAbsent(dictCode, k -> new ArrayList<>());
-                List<DictModel> newList = manyDict.get(dictCode);
-                list.addAll(newList);
+            String dictCodes = String.join("','", filterDictCodes);
+            //String values = String.join(",", needTranslData);
+            String sql="select di.item_value as value,di.item_text as text,d.dict_code as code  from sys_dict_item di left join sys_dict d on d.id=di.dict_id where d.dict_code in ('"+dictCodes+"')";
+            List<DictModel> list = DB.findDto(DictModel.class, sql).findList();
 
-                // 做 redis 缓存
-                for (DictModel dict : newList) {
-                    String redisKey = String.format("sys:cache:dict::%s:%s", dictCode, dict.getValue());
-                    try {
-                        redisTemplate.opsForValue().set(redisKey, dict.getText());
-                    } catch (Exception e) {
-                        log.warn(e.getMessage(), e);
-                    }
+            for (DictModel dict : list) {
+                String redisKey = String.format("sys:cache:dict::%s:%s", dict.getCode(), dict.getValue());
+                try {
+                    redisTemplate.opsForValue().set(redisKey, dict.getText());
+                } catch (Exception e) {
+                    log.warn(e.getMessage(), e);
                 }
-            }*/
+            }
         }
         return translText;
     }
