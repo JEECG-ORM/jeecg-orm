@@ -134,37 +134,34 @@ Jeecg-orm低代码开发平台，可以应用在任何J2EE项目的开发中，�
 - eslint，[@vue/cli 3.2.1](https://cli.vuejs.org/zh/guide)
 - vue-print-nb-jeecg - 打印
 
-项目下载和运行（前端项目）
+#### 项目下载和运行（前端项目）
 
-拉取项目代码
+
+#### 拉取项目代码
 - git clone https://gitee.com/jeecg-salter/jeecg-orm.git
-cd  jeecg-orm/ant-design-vue-jo
-安装node.js
-如果您电脑未安装Node.js，请安装它。
-验证
-#### 出现相应npm版本即可
-npm -v
+- cd  jeecg-orm/ant-design-vue-jo
+- 安装node.js
+- 如果您电脑未安装Node.js，请安装它。
+#### 验证
+- 出现相应npm版本即可
+- npm -v
 #### 出现相应node版本即可
-node -v
-安装yarn
+- node -v
 #### 全局安装yarn
 npm i -g yarn
 #### 验证
-yarn -v # 出现对应版本号即代表安装成功
-切换到ant-design-vue-jo文件夹下
+- yarn -v # 出现对应版本号即代表安装成功
+- 切换到ant-design-vue-jo文件夹下
 #### 下载依赖
-yarn install
+- yarn install
 #### 启动
-yarn run serve
+- yarn run serve
 #### 编译项目
-yarn run build
-#### Lints and fixes files
-yarn run lint
-复制
-接口地址配置
-.env.development
-NODE_ENV=development
-VUE_APP_API_BASE_URL=http://localhost:8080/jeecg-orm
+- yarn run build
+#### 接口地址配置
+- .env.development
+- NODE_ENV=development
+- VUE_APP_API_BASE_URL=http://localhost:8080/jeecg-orm
 
 
 
