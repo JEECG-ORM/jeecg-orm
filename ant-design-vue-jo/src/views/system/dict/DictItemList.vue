@@ -80,7 +80,7 @@
 <script>
   import pick from 'lodash.pick'
   import {filterObj} from '@/utils/util';
-  import DictItemModal from './modules/DictItemModal'
+  import DictItemModal from './DictItemModal'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
 
   export default {

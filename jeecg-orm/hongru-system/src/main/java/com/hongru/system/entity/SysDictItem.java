@@ -1,10 +1,12 @@
 package com.hongru.system.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hongru.ebean.HongRuEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
@@ -20,9 +22,8 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @Entity
-public class SysDictItem extends HongRuEntity implements Serializable {
+public class SysDictItem extends HongRuEntity {
 
-    private static final long serialVersionUID = 1L;
 
     /**
      * 字典id
@@ -30,6 +31,8 @@ public class SysDictItem extends HongRuEntity implements Serializable {
     private String dictId;
 
     @ManyToOne
+    @JoinColumn(name = "dict_id",insertable = false,updatable = false)
+    @JsonBackReference
     private SysDict dict;
 
     /**

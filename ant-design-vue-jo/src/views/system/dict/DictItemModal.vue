@@ -58,7 +58,7 @@
 <script>
   import pick from 'lodash.pick'
   import {addDictItem, editDictItem} from '@/api/api'
-  import { getAction } from '@api/manage'
+  import { getAction,postAction } from '@api/manage'
 
   export default {
     name: "DictItemModal",
@@ -169,7 +169,7 @@
             callback("数据值不能包含特殊字符！")
           }else{
             //update--begin--autor:lvdandan-----date:20201203------for：JT-27【数据字典】字典 - 数据值可重复
-            getAction("/sys/dictItem/dictItemCheck",param).then((res)=>{
+            postAction("/sys/dictItem/dictItemCheck",param).then((res)=>{
               if(res.success){
                 callback()
               }else{

@@ -1,5 +1,6 @@
 package com.hongru.system.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hongru.ebean.HongRuEntity;
 import io.ebean.annotation.Where;
 import lombok.Data;
@@ -22,9 +23,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @Entity
-public class SysDict extends HongRuEntity implements Serializable {
+public class SysDict extends HongRuEntity  {
 
-    private static final long serialVersionUID = 1L;
     /**
      * [预留字段，暂时无用]
      * 字典类型,0 string,1 number类型,2 boolean
@@ -50,6 +50,7 @@ public class SysDict extends HongRuEntity implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "dict_id")
+    @JsonManagedReference
     private List<SysDictItem> dictItems;
 
 }
