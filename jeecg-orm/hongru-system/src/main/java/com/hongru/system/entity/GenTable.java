@@ -1,6 +1,7 @@
 package com.hongru.system.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.hongru.aspect.annotation.Dict;
 import com.hongru.ebean.HongRuEntity;
 import com.hongru.util.StringUtil;
 import io.ebean.annotation.Where;
@@ -22,6 +23,8 @@ public class GenTable extends HongRuEntity {
      */
     private String tableName;
 
+
+    @Dict(dicCode = "table_type")
     private Integer tableType;
 
     /**

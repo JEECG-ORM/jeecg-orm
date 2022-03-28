@@ -4,12 +4,12 @@
       <div class="top">
         <div class="header" style="line-height: 35px;">
           <a href="/">
-            <img src="~@/assets/logo.png" class="logo" alt="logo" style="margin-right: 0px;">
-            <span class="title">HongRu-Antdv</span>
+            <img src="~@/assets/logo.png" class="logo" alt="logo" >
+            <span class="title">JEECG ORM</span>
           </a>
         </div>
         <div class="desc">
-         新鸿儒后台管理系统
+          Jeecg ORM 企业级低代码平台
         </div>
       </div>
 
@@ -22,7 +22,7 @@
           <a href="https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE" target="_blank">条款</a>
         </div>-->
         <div class="copyright">
-          Copyright &copy; 1998 <a href="http://www.jeecg.com" target="_blank">北京新鸿儒世纪网络技术有限公司</a> 出品
+          Copyright &copy; 2022 <a href="http://www.jeecg.com" target="_blank">北京索尔特技术有限公司</a> 出品
         </div>
       </div>
     </div>

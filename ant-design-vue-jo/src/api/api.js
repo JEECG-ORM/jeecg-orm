@@ -80,7 +80,7 @@ const addDict = (params)=>postAction("/sys/dict/add",params);
 const editDict = (params)=>postAction("/sys/dict/edit",params);
 const treeList = (params)=>getAction("/sys/dict/treeList",params);
 const addDictItem = (params)=>postAction("/sys/dictItem/add",params);
-const editDictItem = (params)=>putAction("/sys/dictItem/edit",params);
+const editDictItem = (params)=>postAction("/sys/dictItem/edit",params);
 
 //字典标签专用（通过code获取字典数组）
 export const ajaxGetDictItems = (code, params)=>getAction(`/sys/dict/getDictItems/${code}`,params);

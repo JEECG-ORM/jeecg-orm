@@ -6,7 +6,6 @@
     :disabled="disabled"
     :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
     :placeholder="placeholder"
-    :loadData="asyncLoadTreeData"
     :replaceFields="replaceFields"
     :value="treeValue"
     :treeData="treeData"
@@ -117,6 +116,7 @@
               }
             }
             this.treeData = [...res.result]
+            console.log(this.treeData)
           }else{
             console.log("树一级节点查询结果-else",res)
           }
@@ -200,6 +200,7 @@
       },
 
       onChange(value){
+        console.log(value)
         if(!value){
           this.$emit('change', '');
           this.treeValue = ''

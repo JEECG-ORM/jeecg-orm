@@ -23,7 +23,15 @@
               <a-input placeholder="请输入表描述" v-model="model.tableComment"/>
             </a-form-model-item>
           </a-col>
-
+          <a-col :lg="8">
+            <a-form-model-item label="表类型" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="tableType">
+                <a-select  v-model="model.tableType"  placeholder="请选择表类型">
+                  <a-select-option :value="1">单表</a-select-option>
+                  <a-select-option :value="2">主表</a-select-option>
+                  <a-select-option :value="3">附表</a-select-option>
+                </a-select>
+            </a-form-model-item>
+          </a-col>
         </a-row>
       </a-form-model>
     </a-spin>

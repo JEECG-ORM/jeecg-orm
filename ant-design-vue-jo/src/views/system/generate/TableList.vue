@@ -105,6 +105,12 @@
             }
           },*/
           {
+            title: '表类型',
+            align: "center",
+            dataIndex: 'tableType_dictText',
+            width: 120
+          },
+          {
             title: '表名称',
             align: "center",
             dataIndex: 'tableName',

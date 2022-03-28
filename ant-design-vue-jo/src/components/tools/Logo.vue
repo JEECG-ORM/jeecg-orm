@@ -21,7 +21,7 @@
     props: {
       title: {
         type: String,
-        default: 'HongRu-Antdv',
+        default: 'Jeecg-ORM',
         required: false
       },
       showTitle: {

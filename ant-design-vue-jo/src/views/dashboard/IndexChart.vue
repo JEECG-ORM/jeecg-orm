@@ -195,7 +195,7 @@
       setTimeout(() => {
         this.loading = !this.loading
       }, 1000)
-      this.initLogInfo();
+      //this.initLogInfo();
     },
     methods: {
       initLogInfo () {
