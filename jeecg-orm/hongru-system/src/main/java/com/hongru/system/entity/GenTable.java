@@ -92,8 +92,6 @@ public class GenTable extends HongRuEntity {
     public void save() {
         String className = StringUtil.underline2Camel(this.getTableName(), true);
         this.setClassName(className);
-        this.setPackageName("com.hongru." + this.getTableName().split("_")[0]);
-        this.setModuleName("jeecg-orm");
         super.save();
     }
 }

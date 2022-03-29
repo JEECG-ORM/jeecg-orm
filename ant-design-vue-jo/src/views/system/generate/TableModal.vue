@@ -32,6 +32,11 @@
                 </a-select>
             </a-form-model-item>
           </a-col>
+          <a-col :lg="8" v-if="model.tableType===3">
+            <a-form-model-item  label="主表名称" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="mainTable">
+              <a-input placeholder="请输入主表名称" v-model="model.mainTable"/>
+            </a-form-model-item>
+          </a-col>
         </a-row>
       </a-form-model>
     </a-spin>
@@ -116,6 +121,7 @@
         dateFormat: 'YYYY-MM-DD',
         validatorRules: {
           tableName: [{ required: true, message: '请输入表名称!' }],
+          mainTable: [{ required: true, message: '请输入主表名称!' }],
         },
         departIdShow: false,
         title: '操作',

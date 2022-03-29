@@ -74,11 +74,6 @@ hongru:
 generate:
   # 作者
   author: 新鸿儒
-  # 默认生成包路径 system 需改成自己的模块名称 如 system monitor tool
-  packageName: com.hongru.system
-  # 模块名
-  moduleName: xhrcms-system
-  # 自动去除表前缀，默认是true
-  autoRemovePre: true
-  # 表前缀（生成类名不会包含表前缀，多个用逗号分隔）
-  tablePrefix: sys_
+  # 默认生成包路径
+  packageName: com.hongru
+  moduleName: hongru-system

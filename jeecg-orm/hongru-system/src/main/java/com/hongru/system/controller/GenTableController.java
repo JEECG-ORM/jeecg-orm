@@ -16,6 +16,7 @@ import io.ebean.SqlUpdate;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +38,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/gen/table")
 public class GenTableController {
 
+
+    @Value("${generate.packageName}")
+    private String packageName = "";
+    @Value("${generate.moduleName}")
+    private String moduleName = "";
     private CodeGenerateUtils codeGenerateUtils;
 
     @Autowired
@@ -53,6 +59,8 @@ public class GenTableController {
     public Result<GenTable> add(@RequestBody GenTable genTable) {
         List<GenTableColumn> tableColumnList = genTable.getTableColumnList();
         genTable.setTableColumnList(null);
+        genTable.setPackageName(packageName+"."+ genTable.getTableName().split("_")[0]);
+        genTable.setModuleName(moduleName);
         genTable.save();
         for (GenTableColumn genTableColumn : tableColumnList) {
             genTableColumn.save();
