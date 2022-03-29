@@ -58,9 +58,11 @@ public class GenTableController {
     @PostMapping(value = "/add")
     public Result<GenTable> add(@RequestBody GenTable genTable) {
         List<GenTableColumn> tableColumnList = genTable.getTableColumnList();
+        String tablePrefix = genTable.getTableName().split("_")[0];
         genTable.setTableColumnList(null);
-        genTable.setPackageName(packageName+"."+ genTable.getTableName().split("_")[0]);
+        genTable.setPackageName(packageName+"."+tablePrefix );
         genTable.setModuleName(moduleName);
+        genTable.setDePrefixClassName(genTable.getTableName().replace(tablePrefix+"_",""));
         genTable.save();
         for (GenTableColumn genTableColumn : tableColumnList) {
             genTableColumn.save();
