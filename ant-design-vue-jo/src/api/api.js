@@ -14,7 +14,6 @@ const editContent = (params)=>postAction("/cms/content/edit",params);
 //代码生成
 const addTable = (params)=>postAction("/gen/table/add",params);
 const editTable = (params)=>postAction("/gen/table/edit",params);
-const generateFile = (params)=>getAction("/gen/table/generateFile",params);
 const queryColumnList = (params)=>postAction("/gen/tableColumn/list",params);
 
 //项目管理
@@ -128,7 +127,6 @@ export {
   editLbs,
   addTable,
   editTable,
-  generateFile,
   queryColumnList,
   // imgView,
   // doMian,

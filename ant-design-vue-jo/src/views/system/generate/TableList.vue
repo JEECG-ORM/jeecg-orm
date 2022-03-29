@@ -45,7 +45,10 @@
             </a>
             <a-menu slot="overlay">
               <a-menu-item>
-                <a href="javascript:;" @click="handleGenerateFile(record.id)">一键生成</a>
+                <a href="javascript:;" @click="handleGenerateFile(record.id,'java')">生成Java代码</a>
+              </a-menu-item>
+              <a-menu-item v-if="record.tableType!='3'">
+                <a href="javascript:;" @click="handleGenerateFile(record.id,'vue')">生成Vue代码</a>
               </a-menu-item>
               <a-menu-item>
                 <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
@@ -64,6 +67,7 @@
 </template>
 
 <script>
+  import { getAction, postAction } from '@/api/manage'
   import TableModal from './TableModal'
   import PasswordModal from '../modules/PasswordModal'
   import {putAction, getFileAccessHttpUrl} from '@/api/manage';
@@ -152,23 +156,22 @@
         ],
         url: {
           list: "/gen/table/list",
-          delete: "/sys/user/delete"
+          generateFile: "/gen/table/generateFile",
         },
       }
     },
     computed: {
     },
     methods: {
-      handleGenerateFile(id) {
+      handleGenerateFile(id,type) {
         let that = this;
-        generateFile({id: id}).then((res) => {
-          if (res.success) {
+        getAction(this.url.generateFile+"/"+type,{id:id}).then((res)=>{
+          if(res.success){
             that.$message.success(res.message);
-          } else {
+          }else{
             that.$message.warning(res.message);
           }
-        });
-
+        })
       },
       batchFrozen: function (status) {
         if (this.selectedRowKeys.length <= 0) {

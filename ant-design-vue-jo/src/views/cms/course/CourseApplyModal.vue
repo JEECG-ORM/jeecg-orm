@@ -29,7 +29,7 @@
                     <j-editor v-if="item.htmlType==='editor'" v-model="model[item.javaField]"/>
                     <j-upload v-if="item.htmlType==='file'" v-model="model[item.javaField]"></j-upload>
                     <j-image-upload class="avatar-uploader" v-if="item.htmlType==='image'" v-model="model[item.javaField]"></j-image-upload>
-                    <j-category-select v-if="item.htmlType==='cat_tree'" v-model="model[item.javaField]" :pcode="item.columnExample" :value="model[item.javaField]" />
+                    <j-category-select v-if="item.htmlType==='cat_tree'" v-model="model[item.javaField]" :pcode="item.columnExample" :value="model[item.javaField]" :multiple="true" />
                     <j-area-linkage v-if="item.htmlType==='pca'" v-model="model[item.javaField]" type="cascader"/>
                     <j-date  v-if="item.htmlType=='date'" v-model="model[item.javaField]" :placeholder="'请选择'+item.columnComment" ></j-date>
                 </a-form-model-item>

@@ -105,7 +105,10 @@
 
 
     </a-card>
-    </j-modal>
+    <#if tableType==3>
+        </j-modal>
+        </#if>
+
 
 </template>
 
@@ -172,7 +175,7 @@
                         for (let i = 0; i < columns.length; i++) {
                             if (columns[i].isList) {
                                 let dataIndex=columns[i].javaField;
-                                if(null!=columns[i].dictCode){
+                                if(!!columns[i].dictCode){
                                     dataIndex+="_dictText"
                                 }
                                 let c = {

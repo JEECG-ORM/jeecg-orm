@@ -137,11 +137,22 @@ public class GenTableController {
         return Result.OK();
     }
 
-    @GetMapping(value = "/generateFile")
-    public Result generateFile(String id) {
-        codeGenerateUtils.generateJavaFile(id);
+    @GetMapping(value = "/generateFile/{type}")
+    public Result generateFile(String id,@PathVariable String type) {
+        if("java".equals(type)){
+            codeGenerateUtils.generateJavaFile(id);
+        }
+        if("vue".equals(type)){
+            codeGenerateUtils.generateVueFile(id);
+            GenTable table = DB.find(GenTable.class).where().idEq(id).findOne();
+            if (2 == table.getTableType()) {
+                List<GenTable> subTableList = DB.find(GenTable.class).where().eq("mainTable", table.getTableName()).findList();
+                for(GenTable t:subTableList){
+                    codeGenerateUtils.generateVueFile(t.getId());
+                }
+            }
+        }
         return Result.OK();
     }
-
 
 }

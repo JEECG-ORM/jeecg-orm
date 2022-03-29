@@ -88,7 +88,8 @@
 
 
     </a-card>
-    </j-modal>
+        </j-modal>
+
 
 </template>
 
@@ -138,7 +139,7 @@
                         for (let i = 0; i < columns.length; i++) {
                             if (columns[i].isList) {
                                 let dataIndex=columns[i].javaField;
-                                if( !!columns[i].dictCode){
+                                if(!!columns[i].dictCode){
                                     dataIndex+="_dictText"
                                 }
                                 let c = {

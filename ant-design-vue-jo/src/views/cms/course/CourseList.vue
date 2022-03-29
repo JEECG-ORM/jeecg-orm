@@ -1,5 +1,5 @@
 <template>
-    <a-card :bordered="false">
+        <a-card :bordered="false">
         <!-- 查询区域 -->
         <div class="table-page-search-wrapper">
             <a-form layout="inline" @keyup.enter.native="searchQuery">
@@ -63,8 +63,8 @@
               更多 <a-icon type="down"/>
             </a>
             <a-menu slot="overlay">
-                               <a-menu-item>
-                    <a @click="handleCourseApply(record)">健康课堂报名</a>
+              <a-menu-item>
+                    <a @click="handleCourseApply(record)">健康课堂报名信息</a>
               </a-menu-item>
               <a-menu-item>
                 <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
@@ -75,10 +75,10 @@
           </a-dropdown>
         </span>
         <span slot="isHot_switch" slot-scope="text, record">
-            <a-switch checked-children="是" un-checked-children="否" v-model="record.isHot"  @change="(checked)=>handleField('isHot',checked,record.id)"></a-switch>
+            <a-switch checked-children="否" un-checked-children="是" v-model="record.isHot"  @change="(checked)=>handleField('isHot',checked,record.id)"></a-switch>
         </span>
         <span slot="status_switch" slot-scope="text, record">
-            <a-switch checked-children="是" un-checked-children="否" v-model="record.status"  @change="(checked)=>handleField('status',checked,record.id)"></a-switch>
+            <a-switch checked-children="否" un-checked-children="是" v-model="record.status"  @change="(checked)=>handleField('status',checked,record.id)"></a-switch>
         </span>
 
 
@@ -90,6 +90,8 @@
 
 
     </a-card>
+
+
 </template>
 
 <script>
@@ -129,19 +131,23 @@
                         this.queryColumns=columns;
                         for (let i = 0; i < columns.length; i++) {
                             if (columns[i].isList) {
+                                let dataIndex=columns[i].javaField;
+                                if(null!=columns[i].dictCode){
+                                    dataIndex+="_dictText"
+                                }
                                 let c = {
                                     title: columns[i].columnComment,
                                     align: 'center'
                                 }
                                 if (columns[i].htmlType === 'input' || columns[i].htmlType === 'date') {
-                                    c.dataIndex= '' + columns[i].javaField + ''
+                                    c.dataIndex= '' + dataIndex + ''
                                 }
                                 if (columns[i].htmlType === 'switch') {
                                     c.dataIndex= columns[i].javaField+'_switch';
                                     c.scopedSlots={customRender:columns[i].javaField+ '_switch'};
                                 }
                                 if (columns[i].htmlType === 'cat_tree') {
-                                    c.dataIndex= '' + columns[i].javaField + '_dictText'
+                                    c.dataIndex= '' + dataIndex + ''
                                 }
                                 if (columns[i].fieldLength !== 0) {
                                     c.width = columns[i].fieldLength
