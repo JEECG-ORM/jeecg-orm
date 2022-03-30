@@ -59,6 +59,19 @@ public class StringUtil extends StringUtils{
         matcher.appendTail(sb);
         return sb.toString();
     }
+
+    public static String humpToUnderline(String para){
+        StringBuilder sb=new StringBuilder(para);
+        int temp=0;//偏移量，第i个下划线的位置是 当前的位置+ 偏移量（i-1）,第一个下划线偏移量是0
+        for(int i=0;i<para.length();i++){
+            if(Character.isUpperCase(para.charAt(i))&&0!=i){
+                sb.insert(i+temp, "_");
+                temp+=1;
+            }
+        }
+        return sb.toString().toLowerCase();
+    }
+
     /**
      * 下划线转换为驼峰
      *

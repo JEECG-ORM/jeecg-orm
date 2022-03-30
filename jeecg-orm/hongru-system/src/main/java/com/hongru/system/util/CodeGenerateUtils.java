@@ -38,7 +38,7 @@ public class CodeGenerateUtils {
     String businessName;
 
     public static void main(String[] args) {
-        new CodeGenerateUtils().generateVueFile("cc2ade9c74d44bac9722ce44a6d6def8");
+        new CodeGenerateUtils().generateJavaFile("229e43f1e9a849d2adc324cc8a04b9e8");
     }
 
 

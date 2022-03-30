@@ -367,7 +367,6 @@
             allowInput: true,
             defaultValue: '',
             placeholder: '请选择${title}',
-            validateRules: [{ required: true, message: '请选择${title}' }]
           },
           {
             title: '验证规则',

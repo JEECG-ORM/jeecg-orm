@@ -32,10 +32,13 @@ public class ${className} extends HongRuEntity {
     <#list tableColumnList as model>
         <#if model.columnName!= 'id'&&model.columnName!= 'sort_no'&&model.columnName!= 'create_by'&&model.columnName!= 'create_time'&&model.columnName!= 'update_by'&&model.columnName!= 'update_time'&&model.columnName!= 'deleted'>
             <#if (model.javaType != 'Date') >
-    @ApiModelProperty(value = "${model.columnComment}",example = "${model.columnExample}")
-    <#if (model.dictCode != '') >
+
+        <#if model.dict??>
+    @ApiModelProperty(value = "${model.columnComment}(<#list model.dict.dictItems as dictItem>${dictItem.itemValue}:${dictItem.itemText} </#list>)",example = "${model.dict.dictItems[0].itemValue}")
     @Dict(dicCode = "${model.dictCode}"<#if (model.dictTable != '') > ,dictTable ="${dictTable}",dicText = "${dictText}"</#if>)
-    </#if>
+        <#else>
+    @ApiModelProperty(value = "${model.columnComment}",example = "${model.columnExample}")
+        </#if>
     private ${model.javaType} ${model.javaField};
             </#if>
             <#if (model.javaType = 'Date') >
