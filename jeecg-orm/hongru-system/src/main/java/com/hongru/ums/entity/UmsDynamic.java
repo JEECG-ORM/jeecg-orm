@@ -43,16 +43,16 @@ public class UmsDynamic extends HongRuEntity {
     private String messageText;
 
     @ApiModelProperty(value = "视频审核校验任务",example = "",readOnly = true)
-    private String mediaCheckTaskid;
+    private String mediaCheckTaskId;
 
     @ApiModelProperty(value = "审核状态(-1:审核未通过 1:审核通过 0:待审核 )",example = "-1",readOnly = true)
     @Dict(dicCode = "audit_status")
     private Integer status;
 
-    @ApiModelProperty(value = "点赞数",example = "",readOnly = true)
+    @ApiModelProperty(value = "点赞数",example = "0",readOnly = true)
     private Integer likeNum;
 
-    @ApiModelProperty(value = "评论数",example = "",readOnly = true)
+    @ApiModelProperty(value = "评论数",example = "0",readOnly = true)
     private Integer commentNum;
 
     @Override
@@ -60,8 +60,17 @@ public class UmsDynamic extends HongRuEntity {
         if(null==this.memberId){
         this.memberId="";
         }
-        if(null==this.mediaCheckTaskid){
-        this.mediaCheckTaskid="";
+        if(null==this.mediaCheckTaskId){
+        this.mediaCheckTaskId="";
+        }
+        if(null==this.status){
+        this.status=0;
+        }
+        if(null==this.likeNum){
+        this.likeNum=0;
+        }
+        if(null==this.commentNum){
+        this.commentNum=0;
         }
         super.save();
     }

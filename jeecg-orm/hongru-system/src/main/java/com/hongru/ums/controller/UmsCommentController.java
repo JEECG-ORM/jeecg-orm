@@ -11,6 +11,7 @@ import com.hongru.vo.LoginUser;
 import com.hongru.vo.Result;
 import io.ebean.DB;
 import io.ebean.Ebean;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.web.bind.annotation.*;
@@ -41,12 +42,12 @@ public class UmsCommentController {
 
     @PostMapping("/list")
     @ApiOperation("列表")
-    @ApiOperationSupport(params = @DynamicParameters(properties = {
+    @ApiOperationSupport( params = @DynamicParameters(properties = {
             @DynamicParameter(name = "sourceId", value = "评论数据ID", example = ""),
             @DynamicParameter(name = "type", value = "评论类型(UmsDynamic:动态 CmsContent:内容)", example = "UmsDynamic"),
             @DynamicParameter(name = "status", value = "状态(-1:审核未通过 1:审核通过 0:待审核)", example = "1"),
     }))
-    public Result<HongRuPage<UmsComment>> queryPageList(@RequestBody JSONObject searchObj) {
+    public Result<HongRuPage<UmsComment>> queryUmsCommentPageList(@RequestBody JSONObject searchObj) {
         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         HongRuPage<UmsComment> umsCommentHongRuPage = EbeanUtil.pageList(searchObj, UmsComment.class);
         List<UmsComment> records = umsCommentHongRuPage.getRecords();

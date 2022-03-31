@@ -33,11 +33,11 @@ public class UmsDynamicController {
     @PostMapping("/list")
     @ApiOperation("列表")
     @ApiOperationSupport(params = @DynamicParameters(properties = {
-                @DynamicParameter(name = "memberId", value = "会员ID",example = "11"),
+                @DynamicParameter(name = "memberId", value = "会员ID",example = ""),
                 @DynamicParameter(name = "type", value = "消息类型(txt:文本 img:图片 video:视频 )",example = "txt"),
-                @DynamicParameter(name = "status", value = "审核状态(-1:审核未通过 1:审核通过 0:待审核 )",example = "-1")
+                @DynamicParameter(name = "status", value = "审核状态(-1:审核未通过 1:审核通过 0:待审核 )",example = "-1"),
     }))
-    public Result<HongRuPage<UmsDynamic>> queryPageList(@RequestBody JSONObject searchObj) {
+    public Result<HongRuPage<UmsDynamic>> queryUmsDynamicPageList(@RequestBody JSONObject searchObj) {
         return Result.OK(EbeanUtil.pageList(searchObj, UmsDynamic.class));
     }
 

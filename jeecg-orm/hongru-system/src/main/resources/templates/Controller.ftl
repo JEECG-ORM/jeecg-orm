@@ -45,7 +45,7 @@ public class ${className}Controller {
     </#list>
 </#if>
     }))
-    public Result<HongRuPage<${className}>> queryPageList(@RequestBody JSONObject searchObj) {
+    public Result<HongRuPage<${className}>> query${className}PageList(@RequestBody JSONObject searchObj) {
         return Result.OK(EbeanUtil.pageList(searchObj, ${className}.class));
     }
 

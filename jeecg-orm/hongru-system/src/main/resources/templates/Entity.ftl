@@ -67,6 +67,11 @@ public class ${className} extends HongRuEntity {
         this.${model.javaField}="${model.columnExample}";
         }
     </#if>
+    <#if model.javaType="Integer">
+        if(null==this.${model.javaField}){
+        this.${model.javaField}=${model.columnExample};
+        }
+    </#if>
     <#if model.javaType="Boolean">
         if(null==this.${model.javaField}){
         this.${model.javaField}=${model.columnExample}==1;
