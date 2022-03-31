@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -45,7 +46,7 @@ public class UmsComment extends HongRuEntity {
     @ApiModelProperty(value = "评论内容",example = "")
     private String content;
 
-    @ApiModelProperty(value = "点赞数",example = "")
+    @ApiModelProperty(value = "点赞数",example = "",readOnly = true)
     private Integer likeNum;
 
     @ApiModelProperty(value = "评论数",example = "")
@@ -54,6 +55,9 @@ public class UmsComment extends HongRuEntity {
     @ApiModelProperty(value = "状态(-1:审核未通过 1:审核通过 0:待审核 )",example = "-1")
     @Dict(dicCode = "audit_status")
     private Integer status;
+
+    @Transient
+    private Boolean isGiveLike;
 
     @Override
     public void save() {

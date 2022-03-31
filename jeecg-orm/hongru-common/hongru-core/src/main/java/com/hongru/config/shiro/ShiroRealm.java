@@ -30,7 +30,7 @@ import javax.annotation.Resource;
 @Component
 @Slf4j
 public class ShiroRealm extends AuthorizingRealm {
-	@Lazy
+    @Lazy
     @Resource
     private SysUserApi sysUserApi;
 
@@ -87,20 +87,36 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException {
         log.debug("===============Shiro身份认证开始============doGetAuthenticationInfo==========");
-        String token = (String) auth.getCredentials();
+        JwtToken jwtToken = (JwtToken) auth;
+        String token = (String) jwtToken.getCredentials();
+        String loginType = JwtUtil.getLoginType(token);
         if (token == null) {
             //log.info("————————身份认证失败——————————IP地址:  "+ oConvertUtils.getIpAddrByRequest(SpringContextUtils.getHttpServletRequest()));
             throw new AuthenticationException("token为空!");
+        }   // 校验token有效性
+        LoginUser loginUser = new LoginUser();
+        if ("SysUser".equals(loginType)) {
+            try {
+                loginUser = this.checkUserTokenIsEffect(token);
+            } catch (AuthenticationException e) {
+                JwtUtil.responseError(SpringContextUtils.getHttpServletResponse(), 401, e.getMessage());
+                e.printStackTrace();
+                return null;
+            }
         }
-        // 校验token有效性
-        LoginUser loginUser = null;
-        try {
-            loginUser = this.checkUserTokenIsEffect(token);
-        } catch (AuthenticationException e) {
-            JwtUtil.responseError(SpringContextUtils.getHttpServletResponse(),401,e.getMessage());
-            e.printStackTrace();
-            return null;
+        if ("UmsMember".equals(loginType)) {
+            loginUser.setId(JwtUtil.getUsername(token));
+            // 解密获得username，用于和数据库进行对比
+            String username = JwtUtil.getUsername(token);
+            if (username == null) {
+                throw new AuthenticationException("token非法无效!");
+            }
+            // 校验token是否超时失效 & 或者账号密码是否错误
+            if (!jwtTokenRefresh(token, username, username)) {
+                throw new AuthenticationException(CommonConstant.TOKEN_IS_INVALID_MSG);
+            }
         }
+        loginUser.setLoginType(loginType);
         return new SimpleAuthenticationInfo(loginUser, token, getName());
     }
 
@@ -117,7 +133,7 @@ public class ShiroRealm extends AuthorizingRealm {
         }
 
         // 查询用户信息
-        log.debug("———校验token是否有效————checkUserTokenIsEffect——————— "+ token);
+        log.debug("———校验token是否有效————checkUserTokenIsEffect——————— " + token);
         LoginUser loginUser = sysUserApi.getUserByName(username);
         if (loginUser == null) {
             throw new AuthenticationException("用户不存在!");
@@ -151,7 +167,7 @@ public class ShiroRealm extends AuthorizingRealm {
      * 3、当该用户这次请求jwt生成的token值已经超时，但该token对应cache中的k还是存在，则表示该用户一直在操作只是JWT的token失效了，程序会给token对应的k映射的v值重新生成JWTToken并覆盖v值，该缓存生命周期重新计算
      * 4、当该用户这次请求jwt在生成的token值已经超时，并在cache中不存在对应的k，则表示该用户账户空闲超时，返回用户信息已失效，请重新登录。
      * 注意： 前端请求Header中设置Authorization保持不变，校验有效性以缓存中的token为准。
-     *       用户过期时间 = Jwt有效时间 * 2。
+     * 用户过期时间 = Jwt有效时间 * 2。
      *
      * @param userName
      * @param passWord
@@ -165,8 +181,8 @@ public class ShiroRealm extends AuthorizingRealm {
                 String newAuthorization = JwtUtil.sign(userName, passWord);
                 // 设置超时时间
                 redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + token, newAuthorization);
-                redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + token, JwtUtil.EXPIRE_TIME *2 / 1000);
-                log.debug("——————————用户在线操作，更新token保证不掉线—————————jwtTokenRefresh——————— "+ token);
+                redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + token, JwtUtil.EXPIRE_TIME * 2 / 1000);
+                log.debug("——————————用户在线操作，更新token保证不掉线—————————jwtTokenRefresh——————— " + token);
             }
             //update-begin--Author:scott  Date:20191005  for：解决每次请求，都重写redis中 token缓存问题
 //			else {

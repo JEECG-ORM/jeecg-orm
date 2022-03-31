@@ -34,10 +34,10 @@ public class ${className} extends HongRuEntity {
             <#if (model.javaType != 'Date') >
 
         <#if model.dict??>
-    @ApiModelProperty(value = "${model.columnComment}(<#list model.dict.dictItems as dictItem>${dictItem.itemValue}:${dictItem.itemText} </#list>)",example = "${model.dict.dictItems[0].itemValue}")
+    @ApiModelProperty(value = "${model.columnComment}(<#list model.dict.dictItems as dictItem>${dictItem.itemValue}:${dictItem.itemText} </#list>)",example = "${model.dict.dictItems[0].itemValue}"<#if !model.isInsert>,readOnly = true</#if>)
     @Dict(dicCode = "${model.dictCode}"<#if (model.dictTable != '') > ,dictTable ="${dictTable}",dicText = "${dictText}"</#if>)
         <#else>
-    @ApiModelProperty(value = "${model.columnComment}",example = "${model.columnExample}")
+    @ApiModelProperty(value = "${model.columnComment}",example = "${model.columnExample}"<#if !model.isInsert>,readOnly = true</#if>)
         </#if>
     private ${model.javaType} ${model.javaField};
             </#if>

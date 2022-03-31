@@ -29,7 +29,7 @@ import com.hongru.aspect.annotation.Dict;
 public class UmsDynamic extends HongRuEntity {
 
 
-    @ApiModelProperty(value = "会员ID",example = "")
+    @ApiModelProperty(value = "会员ID",example = "",readOnly = true)
     private String memberId;
 
     @ApiModelProperty(value = "消息类型(txt:文本 img:图片 video:视频 )",example = "txt")
@@ -42,32 +42,23 @@ public class UmsDynamic extends HongRuEntity {
     @ApiModelProperty(value = "文字内容",example = "")
     private String messageText;
 
-    @ApiModelProperty(value = "视频审核校验任务",example = "")
+    @ApiModelProperty(value = "视频审核校验任务",example = "",readOnly = true)
     private String mediaCheckTaskid;
 
-    @ApiModelProperty(value = "审核状态(-1:审核未通过 1:审核通过 0:待审核 )",example = "-1")
+    @ApiModelProperty(value = "审核状态(-1:审核未通过 1:审核通过 0:待审核 )",example = "-1",readOnly = true)
     @Dict(dicCode = "audit_status")
     private Integer status;
 
-    @ApiModelProperty(value = "点赞数",example = "")
+    @ApiModelProperty(value = "点赞数",example = "",readOnly = true)
     private Integer likeNum;
 
-    @ApiModelProperty(value = "评论数",example = "")
+    @ApiModelProperty(value = "评论数",example = "",readOnly = true)
     private Integer commentNum;
 
     @Override
     public void save() {
         if(null==this.memberId){
         this.memberId="";
-        }
-        if(null==this.type){
-        this.type="";
-        }
-        if(null==this.filePath){
-        this.filePath="";
-        }
-        if(null==this.messageText){
-        this.messageText="";
         }
         if(null==this.mediaCheckTaskid){
         this.mediaCheckTaskid="";

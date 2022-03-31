@@ -36,7 +36,11 @@ public class ${className}Controller {
 <#if tableColumnList?exists>
     <#list tableColumnList as model>
         <#if model.isQuery>
-    @DynamicParameter(name = "${model.javaField}", value = "${model.columnComment}",example = "${model.columnExample}"),
+            <#if model.dict??>
+                @DynamicParameter(name = "${model.javaField}", value = "${model.columnComment}(<#list model.dict.dictItems as dictItem>${dictItem.itemValue}:${dictItem.itemText} </#list>)",example = "${model.dict.dictItems[0].itemValue}"),
+            <#else>
+                @DynamicParameter(name = "${model.javaField}", value = "${model.columnComment}",example = "${model.columnExample}"),
+            </#if>
         </#if>
     </#list>
 </#if>

@@ -77,3 +77,7 @@ generate:
   # 默认生成包路径
   packageName: com.hongru
   moduleName: hongru-system
+wx:
+  miniapp:
+    appId: wx4f58435fb9fc62c4
+    secret: 35a9d58382539c0772ef5a6f69a65c38

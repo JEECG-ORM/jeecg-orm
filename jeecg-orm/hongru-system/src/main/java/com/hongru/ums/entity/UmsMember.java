@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -54,7 +55,9 @@ public class UmsMember extends HongRuEntity {
     private String blood;
     @ApiModelProperty(value = "生日",example = "19940408")
     private String birthday;
-
+    @ApiModelProperty(value = "token")
+    @Transient
+    private String token;
     @Override
     public void save() {
         if(null==this.openId){

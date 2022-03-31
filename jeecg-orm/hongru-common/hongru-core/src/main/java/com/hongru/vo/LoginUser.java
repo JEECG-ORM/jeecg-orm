@@ -21,6 +21,7 @@ import java.util.Date;
 @Accessors(chain = true)
 public class LoginUser {
 
+	private String loginType;
 	/**
 	 * 登录人id
 	 */

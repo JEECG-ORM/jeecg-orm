@@ -1,6 +1,7 @@
 package com.hongru.util;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
@@ -87,6 +88,15 @@ public class JwtUtil {
 		}
 	}
 
+	public static String getLoginType(String token) {
+		try {
+			DecodedJWT jwt = JWT.decode(token);
+			return jwt.getClaim("loginType").asString();
+		} catch (JWTDecodeException e) {
+			return null;
+		}
+	}
+
 	/**
 	 * 生成签名,5min后过期
 	 *
@@ -99,6 +109,13 @@ public class JwtUtil {
 		Algorithm algorithm = Algorithm.HMAC256(secret);
 		// 附带username信息
 		return JWT.create().withClaim("username", username).withExpiresAt(date).sign(algorithm);
+
+	}
+	public static String sign(String username, String secret,String loginType) {
+		Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
+		Algorithm algorithm = Algorithm.HMAC256(secret);
+		// 附带username信息
+		return JWT.create().withClaim("username", username).withClaim("loginType", loginType).withExpiresAt(date).sign(algorithm);
 
 	}
 

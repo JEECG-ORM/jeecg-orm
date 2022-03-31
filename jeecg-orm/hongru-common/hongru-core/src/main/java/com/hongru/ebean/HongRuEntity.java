@@ -62,14 +62,18 @@ public abstract class HongRuEntity implements Serializable {
             this.setSortNo(0D);
         }
         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        this.setCreateBy(loginUser.getUsername());
-        this.setUpdateBy(loginUser.getUsername());
+        if (null != loginUser) {
+            this.setCreateBy(loginUser.getUsername());
+            this.setUpdateBy(loginUser.getUsername());
+        }
         DB.save(this);
     }
 
     public void update() {
         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        this.setUpdateBy(loginUser.getUsername());
+        if (null != loginUser) {
+            this.setUpdateBy(loginUser.getUsername());
+        }
         this.setUpdateTime(new Date());
         DB.update(this);
     }

@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.hongru.ebean.EbeanUtil;
 import com.hongru.ums.entity.UmsLikeRecord;
 import com.hongru.util.StringUtil;
+import com.hongru.vo.LoginUser;
 import com.hongru.vo.Result;
 import io.ebean.ExpressionList;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
@@ -34,6 +36,8 @@ public class UmsLikeRecordController {
     @PostMapping(value = "/addOrCancel")
     @ApiOperation(value = "点赞收藏接口(取消也调用此接口，参数不变)")
     public Result save(@RequestBody UmsLikeRecord likeRecord) {
+        LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        likeRecord.setMemberId(loginUser.getId());
         JSONObject jsonObject = (JSONObject) JSONObject.toJSON(likeRecord);
         int delCount = EbeanUtil.initExpressionList(jsonObject, UmsLikeRecord.class).delete();
         if (delCount > 0) {
