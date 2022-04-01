@@ -64,7 +64,7 @@ public class UmsDynamic extends HongRuEntity {
         this.mediaCheckTaskId="";
         }
         if(null==this.status){
-        this.status=0;
+        this.status=1;
         }
         if(null==this.likeNum){
         this.likeNum=0;

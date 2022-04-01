@@ -40,7 +40,7 @@ public class UmsCommentController {
                 @DynamicParameter(name = "type", value = "评论类型(UmsDynamic:动态 CmsContent:内容 )",example = "UmsDynamic"),
                 @DynamicParameter(name = "status", value = "状态(-1:审核未通过 1:审核通过 0:待审核 )",example = "-1"),
     }))
-    public Result<HongRuPage<UmsComment>> querycommentPageList(@RequestBody JSONObject searchObj) {
+    public Result<HongRuPage<UmsComment>> queryCommentPageList(@RequestBody JSONObject searchObj) {
         return Result.OK(EbeanUtil.pageList(searchObj, UmsComment.class));
     }
 

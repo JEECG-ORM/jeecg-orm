@@ -33,17 +33,17 @@ public class UmsComment extends HongRuEntity {
     @ApiModelProperty(value = "会员ID",example = "",readOnly = true)
     private String memberId;
 
-    @ApiModelProperty(value = "父评论ID",example = "",readOnly = true)
+    @ApiModelProperty(value = "父评论ID",example = "")
     private String commentId;
 
-    @ApiModelProperty(value = "评论数据ID",example = "",readOnly = true)
+    @ApiModelProperty(value = "评论数据ID",example = "")
     private String sourceId;
 
-    @ApiModelProperty(value = "评论类型(UmsDynamic:动态 CmsContent:内容 )",example = "UmsDynamic",readOnly = true)
+    @ApiModelProperty(value = "评论类型(UmsDynamic:动态 CmsContent:内容 )",example = "UmsDynamic")
     @Dict(dicCode = "comment_type")
     private String type;
 
-    @ApiModelProperty(value = "评论内容",example = "",readOnly = true)
+    @ApiModelProperty(value = "评论内容",example = "")
     private String content;
 
     @ApiModelProperty(value = "点赞数",example = "",readOnly = true)
@@ -63,18 +63,6 @@ public class UmsComment extends HongRuEntity {
     public void save() {
         if(null==this.memberId){
         this.memberId="";
-        }
-        if(null==this.commentId){
-        this.commentId="";
-        }
-        if(null==this.sourceId){
-        this.sourceId="";
-        }
-        if(null==this.type){
-        this.type="";
-        }
-        if(null==this.content){
-        this.content="";
         }
         if(null==this.likeNum){
         this.likeNum=0;

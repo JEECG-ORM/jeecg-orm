@@ -9,13 +9,17 @@ import com.hongru.ebean.HongRuPage;
 import com.hongru.ums.entity.UmsComment;
 import com.hongru.ums.entity.UmsDynamic;
 import com.hongru.ums.entity.UmsLikeRecord;
+import com.hongru.ums.entity.vo.UmsDynamicVo;
+import com.hongru.util.StringUtil;
 import com.hongru.vo.LoginUser;
 import com.hongru.vo.Result;
 import io.ebean.DB;
+import io.ebean.ExpressionList;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,26 +44,80 @@ import java.util.stream.Collectors;
 @Api(tags = "会员管理")
 public class UmsApiController {
 
+    @Value("${generate.packageName}")
+    private String packageName = "";
+
+    @ApiOperation("发布动态")
+    @ApiOperationSupport(ignoreParameters = {"umsDynamic.id"})
+    @PostMapping(value = "/addDynamic")
+    public Result<UmsDynamic> add(@RequestBody UmsDynamic umsDynamic) {
+        LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        umsDynamic.setMemberId(loginUser.getId());
+        umsDynamic.save();
+        return Result.OK("添加成功");
+    }
+
+    @ApiOperation("发布评论")
+    @ApiOperationSupport(ignoreParameters = {"umsComment.id"})
+    @PostMapping(value = "/addComment")
+    public Result<UmsComment> add(@RequestBody UmsComment umsComment) {
+        LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        umsComment.setMemberId(loginUser.getId());
+        umsComment.save();
+        changeColumnNum(umsComment.getType(), "comment_num", umsComment.getSourceId(), "+1");
+        return Result.OK("添加成功");
+    }
+
+    @PostMapping(value = "/likeAndCollect")
+    @ApiOperation(value = "点赞收藏接口(取消也调用此接口，参数不变)")
+    public Result likeAndCollect(@RequestBody UmsLikeRecord likeRecord) {
+        LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        likeRecord.setMemberId(loginUser.getId());
+        JSONObject jsonObject = (JSONObject) JSONObject.toJSON(likeRecord);
+        String columnName = likeRecord.getOperation() + "_num";
+        int delCount = EbeanUtil.initExpressionList(jsonObject, UmsLikeRecord.class).delete();
+        if (delCount > 0) {
+            if (!"collect".equals(likeRecord.getOperation())) {
+                changeColumnNum(likeRecord.getType(), columnName, likeRecord.getSourceId(), "-1");
+            }
+            return Result.OK();
+        }
+        if (!"collect".equals(likeRecord.getOperation())) {
+            changeColumnNum(likeRecord.getType(), columnName, likeRecord.getSourceId(), "+1");
+        }
+        likeRecord.save();
+        return Result.OK();
+    }
+
+    public void changeColumnNum(String className, String columnName, String id, String num) {
+        String prefix = StringUtil.humpToUnderline(className).split("_")[0];
+        String classForName = packageName + "." + prefix + "." + "entity." + className;
+        try {
+            Class<?> aClass = Class.forName(classForName);
+            ExpressionList<?> el = EbeanUtil.initExpressionList(aClass).where().idEq(id);
+            el.asUpdate().setRaw(columnName + "=" + columnName + num).update();
+        } catch (ClassNotFoundException ignored) {
+
+        }
+    }
 
     @PostMapping("/queryDynamicPageList")
     @ApiOperation("动态消息列表")
     @ApiOperationSupport(params = @DynamicParameters(properties = {
-            @DynamicParameter(name = "memberId", value = "会员ID",example = ""),
-            @DynamicParameter(name = "type", value = "消息类型(txt:文本 img:图片 video:视频 )",example = "txt"),
-            @DynamicParameter(name = "status", value = "审核状态(-1:审核未通过 1:审核通过 0:待审核 )",example = "-1"),
+            @DynamicParameter(name = "memberId", value = "会员ID(不传就是所有动态)", example = ""),
     }))
-    public Result<HongRuPage<UmsDynamic>> queryDynamicPageList(@RequestBody JSONObject searchObj) {
-        return Result.OK(EbeanUtil.pageList(searchObj, UmsDynamic.class));
+    public Result<HongRuPage<UmsDynamicVo>> queryDynamicPageList(@RequestBody JSONObject searchObj) {
+        searchObj.put("status",1);
+        return Result.OK(EbeanUtil.pageList(searchObj, UmsDynamicVo.class));
     }
 
     @PostMapping("/queryCommentPageList")
-    @ApiOperation("列表")
-    @ApiOperationSupport( params = @DynamicParameters(properties = {
+    @ApiOperation("评论列表")
+    @ApiOperationSupport(params = @DynamicParameters(properties = {
             @DynamicParameter(name = "sourceId", value = "评论数据ID", example = ""),
-            @DynamicParameter(name = "type", value = "评论类型(UmsDynamic:动态 CmsContent:内容)", example = "UmsDynamic"),
-            @DynamicParameter(name = "status", value = "状态(-1:审核未通过 1:审核通过 0:待审核)", example = "1"),
     }))
     public Result<HongRuPage<UmsComment>> queryCommentPageList(@RequestBody JSONObject searchObj) {
+        searchObj.put("status",1);
         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         HongRuPage<UmsComment> umsCommentHongRuPage = EbeanUtil.pageList(searchObj, UmsComment.class);
         List<UmsComment> records = umsCommentHongRuPage.getRecords();
