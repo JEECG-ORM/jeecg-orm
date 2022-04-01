@@ -76,12 +76,11 @@ public class SysApiController {
     /**
      * 文件上传统一方法
      * @param request
-     * @param response
      * @return
      */
     @PostMapping(value = "/commomn/upload")
     @ApiOperation("文件上传")
-    public Result<?> upload(HttpServletRequest request, HttpServletResponse response) {
+    public Result<?> upload(HttpServletRequest request) {
         Result<?> result = new Result<>();
         String savePath = "";
         String bizPath = request.getParameter("biz");

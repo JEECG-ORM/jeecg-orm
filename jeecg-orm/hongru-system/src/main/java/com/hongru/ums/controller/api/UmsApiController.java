@@ -9,6 +9,7 @@ import com.hongru.ebean.HongRuPage;
 import com.hongru.ums.entity.UmsComment;
 import com.hongru.ums.entity.UmsDynamic;
 import com.hongru.ums.entity.UmsLikeRecord;
+import com.hongru.ums.entity.vo.UmsCommentVo;
 import com.hongru.ums.entity.vo.UmsDynamicVo;
 import com.hongru.util.StringUtil;
 import com.hongru.vo.LoginUser;
@@ -58,9 +59,9 @@ public class UmsApiController {
     }
 
     @ApiOperation("发布评论")
-    @ApiOperationSupport(ignoreParameters = {"umsComment.id"})
+    @ApiOperationSupport(ignoreParameters = {"UmsCommentVo.id"})
     @PostMapping(value = "/addComment")
-    public Result<UmsComment> add(@RequestBody UmsComment umsComment) {
+    public Result<UmsCommentVo> add(@RequestBody UmsComment umsComment) {
         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         umsComment.setMemberId(loginUser.getId());
         umsComment.save();
@@ -116,21 +117,21 @@ public class UmsApiController {
     @ApiOperationSupport(params = @DynamicParameters(properties = {
             @DynamicParameter(name = "sourceId", value = "评论数据ID", example = ""),
     }))
-    public Result<HongRuPage<UmsComment>> queryCommentPageList(@RequestBody JSONObject searchObj) {
+    public Result<HongRuPage<UmsCommentVo>> queryCommentPageList(@RequestBody JSONObject searchObj) {
         searchObj.put("status",1);
         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        HongRuPage<UmsComment> umsCommentHongRuPage = EbeanUtil.pageList(searchObj, UmsComment.class);
-        List<UmsComment> records = umsCommentHongRuPage.getRecords();
+        HongRuPage<UmsCommentVo> UmsCommentVoHongRuPage = EbeanUtil.pageList(searchObj, UmsCommentVo.class);
+        List<UmsCommentVo> records = UmsCommentVoHongRuPage.getRecords();
         List<String> shareIds = records.stream().map(e -> e.getId()).collect(Collectors.toList());
         List<UmsLikeRecord> giveLikes = DB.find(UmsLikeRecord.class).where().
                 in("sourceId", shareIds).
                 eq("memberId", loginUser.getId()).
                 eq("operation", "like").findList();
-        for (UmsComment comment : records) {
+        for (UmsCommentVo comment : records) {
             comment.setIsGiveLike(giveLikes.stream().anyMatch(e -> comment.getId().equals(e.getSourceId())));
         }
-        umsCommentHongRuPage.setRecords(records);
-        return Result.OK(umsCommentHongRuPage);
+        UmsCommentVoHongRuPage.setRecords(records);
+        return Result.OK(UmsCommentVoHongRuPage);
     }
 
 
