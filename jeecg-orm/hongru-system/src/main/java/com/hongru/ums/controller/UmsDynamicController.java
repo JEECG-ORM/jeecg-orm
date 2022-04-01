@@ -14,6 +14,8 @@ import io.swagger.annotations.ApiOperation;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
+import springfox.documentation.annotations.ApiIgnore;
+
 /**
 * @Description
 * @Copyright (c) 1998-2022 北京新鸿儒世纪网络技术有限公司 All Rights Reserved.
@@ -27,17 +29,17 @@ import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
 @RestController
 @RequestMapping("/ums/dynamic")
 @Slf4j
-@Api(tags = "动态消息管理")
+@ApiIgnore
 public class UmsDynamicController {
 
     @PostMapping("/list")
-    @ApiOperation("列表")
+    @ApiOperation("动态消息列表")
     @ApiOperationSupport(params = @DynamicParameters(properties = {
                 @DynamicParameter(name = "memberId", value = "会员ID",example = ""),
                 @DynamicParameter(name = "type", value = "消息类型(txt:文本 img:图片 video:视频 )",example = "txt"),
                 @DynamicParameter(name = "status", value = "审核状态(-1:审核未通过 1:审核通过 0:待审核 )",example = "-1"),
     }))
-    public Result<HongRuPage<UmsDynamic>> queryUmsDynamicPageList(@RequestBody JSONObject searchObj) {
+    public Result<HongRuPage<UmsDynamic>> queryDynamicPageList(@RequestBody JSONObject searchObj) {
         return Result.OK(EbeanUtil.pageList(searchObj, UmsDynamic.class));
     }
 

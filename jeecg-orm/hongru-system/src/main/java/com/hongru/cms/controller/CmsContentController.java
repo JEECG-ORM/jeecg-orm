@@ -14,6 +14,8 @@ import io.swagger.annotations.ApiOperation;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
+import springfox.documentation.annotations.ApiIgnore;
+
 /**
 * @Description
 * @Copyright (c) 1998-2022 北京新鸿儒世纪网络技术有限公司 All Rights Reserved.
@@ -27,18 +29,18 @@ import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
 @RestController
 @RequestMapping("/cms/content")
 @Slf4j
-@Api(tags = "内容管理")
+@ApiIgnore
 public class CmsContentController {
 
     @PostMapping("/list")
-    @ApiOperation("列表")
+    @ApiOperation("内容列表")
     @ApiOperationSupport(params = @DynamicParameters(properties = {
-    @DynamicParameter(name = "channelCode", value = "栏目编码",example = "C01"),
-    @DynamicParameter(name = "title", value = "标题",example = "首页"),
-    @DynamicParameter(name = "status", value = "状态",example = "1"),
-    @DynamicParameter(name = "categoryCode", value = "分类",example = "F01"),
+                @DynamicParameter(name = "channelCode", value = "栏目编码",example = "C01"),
+                @DynamicParameter(name = "title", value = "标题",example = "首页"),
+                @DynamicParameter(name = "status", value = "状态",example = "1"),
+                @DynamicParameter(name = "categoryCode", value = "分类",example = "F01"),
     }))
-    public Result<HongRuPage<CmsContent>> queryPageList(@RequestBody JSONObject searchObj) {
+    public Result<HongRuPage<CmsContent>> queryContentPageList(@RequestBody JSONObject searchObj) {
         return Result.OK(EbeanUtil.pageList(searchObj, CmsContent.class));
     }
 
@@ -66,15 +68,17 @@ public class CmsContentController {
         EbeanUtil.deleteBatch(ids, CmsContent.class);
         return Result.OK("批量删除成功");
     }
-    @PostMapping(value="/status")
-    public Result<?> status(@RequestBody StatusDto statusDto) {
-        EbeanUtil.status(statusDto,CmsContent.class);
+
+    @PostMapping(value="/field/{field}")
+    public Result<?> field(@PathVariable String field, @RequestBody StatusDto statusDto) {
+        EbeanUtil.field(field,statusDto,CmsContent.class);
         return Result.OK();
     }
+
     @PostMapping(value="/sortNo")
     public Result<?> sortNo(@RequestBody SortNoDto sortNoDto) {
         EbeanUtil.sortNo(sortNoDto,CmsContent.class);
-    return Result.OK();
+        return Result.OK();
     }
 
 

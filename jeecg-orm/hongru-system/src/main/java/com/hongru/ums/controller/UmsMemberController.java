@@ -14,6 +14,8 @@ import io.swagger.annotations.ApiOperation;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
+import springfox.documentation.annotations.ApiIgnore;
+
 /**
 * @Description
 * @Copyright (c) 1998-2022 北京新鸿儒世纪网络技术有限公司 All Rights Reserved.
@@ -27,7 +29,7 @@ import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
 @RestController
 @RequestMapping("/ums/member")
 @Slf4j
-@Api(tags = "会员管理")
+@ApiIgnore
 public class UmsMemberController {
 
     @PostMapping("/list")

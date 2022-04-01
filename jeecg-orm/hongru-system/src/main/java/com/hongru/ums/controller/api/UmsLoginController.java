@@ -1,4 +1,4 @@
-package com.hongru.ums.controller;
+package com.hongru.ums.controller.api;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.api.impl.WxMaServiceImpl;

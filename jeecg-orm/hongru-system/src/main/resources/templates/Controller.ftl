@@ -27,11 +27,11 @@ import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
 @RestController
 @RequestMapping("/${className?replace("([a-z])([A-Z]+)","$1/$2","r")?lower_case}")
 @Slf4j
-@Api(tags = "${tableComment}管理")
+@ApiIgnore
 public class ${className}Controller {
 
     @PostMapping("/list")
-    @ApiOperation("列表")
+    @ApiOperation("${tableComment}列表")
     @ApiOperationSupport(params = @DynamicParameters(properties = {
 <#if tableColumnList?exists>
     <#list tableColumnList as model>
@@ -45,7 +45,7 @@ public class ${className}Controller {
     </#list>
 </#if>
     }))
-    public Result<HongRuPage<${className}>> query${className}PageList(@RequestBody JSONObject searchObj) {
+    public Result<HongRuPage<${className}>> query${dePrefixClassName}PageList(@RequestBody JSONObject searchObj) {
         return Result.OK(EbeanUtil.pageList(searchObj, ${className}.class));
     }
 

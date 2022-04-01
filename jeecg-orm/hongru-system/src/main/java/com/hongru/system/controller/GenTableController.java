@@ -62,7 +62,7 @@ public class GenTableController {
         genTable.setTableColumnList(null);
         genTable.setPackageName(packageName+"."+tablePrefix );
         genTable.setModuleName(moduleName);
-        genTable.setDePrefixClassName(genTable.getTableName().replace(tablePrefix+"_",""));
+        genTable.setDePrefixClassName(genTable.getClassName().replace(StringUtil.captureName(tablePrefix), ""));
         genTable.save();
         for (GenTableColumn genTableColumn : tableColumnList) {
             genTableColumn.save();

@@ -1,6 +1,13 @@
-package com.hongru.system.controller;
+package com.hongru.system.controller.api;
 
+import com.alibaba.fastjson.JSONObject;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
+import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
 import com.hongru.constant.CommonConstant;
+import com.hongru.ebean.EbeanUtil;
+import com.hongru.ebean.HongRuPage;
+import com.hongru.system.entity.SysLbs;
 import com.hongru.util.CommonUtils;
 import com.hongru.util.StringUtil;
 import com.hongru.vo.Result;
@@ -9,10 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -25,17 +29,18 @@ import java.io.IOException;
  * @Description
  * @Copyright (c) 1998-2022 北京新鸿儒世纪网络技术有限公司 All Rights Reserved.
  * @Url https://www.xinhongru.com
- * @ClassName CommonController
+ * @ClassName SysApiController
  * @Author salter <salter@vip.163.com>
  * @Version V1.0.0
  * @Since 1.0
- * @Date 2022/1/11 13:45
+ * @Date 2022/4/1 10:36
  */
-@Slf4j
+
 @RestController
-@RequestMapping("/sys/common")
-@Api(tags = "通用接口")
-public class CommonController {
+@RequestMapping("/sys")
+@Slf4j
+@Api(tags = "系统通用接口")
+public class SysApiController {
 
 
     @Value(value = "${hongru.path.upload}")
@@ -46,6 +51,18 @@ public class CommonController {
      */
     @Value(value="${hongru.uploadType}")
     private String uploadType;
+
+
+    @PostMapping("/queryLbsPageList")
+    @ApiOperation("位置服务列表")
+    @ApiOperationSupport(params = @DynamicParameters(properties = {
+            @DynamicParameter(name = "name", value = "项目名称",example = "北京"),
+            @DynamicParameter(name = "status", value = "状态",example = "1"),
+    }))
+    public Result<HongRuPage<SysLbs>> queryLbsPageList(@RequestBody JSONObject searchObj) {
+        return Result.OK(EbeanUtil.pageList(searchObj, SysLbs.class));
+    }
+
 
     /**
      * @Author 政辉
@@ -62,7 +79,7 @@ public class CommonController {
      * @param response
      * @return
      */
-    @PostMapping(value = "/upload")
+    @PostMapping(value = "/commomn/upload")
     @ApiOperation("文件上传")
     public Result<?> upload(HttpServletRequest request, HttpServletResponse response) {
         Result<?> result = new Result<>();

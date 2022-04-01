@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @Description
@@ -27,7 +28,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/ums/like/record")
 @Slf4j
-@Api(tags = "点赞收藏记录管理")
+@ApiIgnore
 public class UmsLikeRecordController {
 
     @Value("${generate.packageName}")

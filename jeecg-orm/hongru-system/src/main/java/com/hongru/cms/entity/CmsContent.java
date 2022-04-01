@@ -28,28 +28,38 @@ import com.hongru.aspect.annotation.Dict;
 @ApiModel("内容对象")
 public class CmsContent extends HongRuEntity {
 
-    @ApiModelProperty(value = "栏目编码",example = "C01")
+
+    @ApiModelProperty(value = "栏目编码",example = "C01",readOnly = true)
     private String channelCode;
+
     @ApiModelProperty(value = "标题",example = "首页")
     private String title;
+
     @ApiModelProperty(value = "副标题",example = "0")
     private String subTitle;
+
     @ApiModelProperty(value = "简介",example = "0")
     private String intro;
+
     @ApiModelProperty(value = "图片",example = "0")
     private String image;
+
     @ApiModelProperty(value = "文件",example = "0")
     private String file;
+
     @ApiModelProperty(value = "富文本",example = "0")
     private String detailCms;
+
     @ApiModelProperty(value = "路由ID",example = "0")
     private String routerId;
+
     @ApiModelProperty(value = "数据ID",example = "0")
     private String dataId;
-    @ApiModelProperty(value = "状态",example = "1")
+
+    @ApiModelProperty(value = "状态",example = "1",readOnly = true)
     private Boolean status;
+
     @ApiModelProperty(value = "分类",example = "F01")
-    @Dict(dictTable ="sys_category",dicText = "name",dicCode = "code")
     private String categoryCode;
 
     @Override

@@ -14,6 +14,8 @@ import io.swagger.annotations.ApiOperation;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
+import springfox.documentation.annotations.ApiIgnore;
+
 /**
 * @Description
 * @Copyright (c) 1998-2022 北京新鸿儒世纪网络技术有限公司 All Rights Reserved.
@@ -27,18 +29,18 @@ import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
 @RestController
 @RequestMapping("/cms/course")
 @Slf4j
-@Api(tags = "健康课堂管理")
+@ApiIgnore
 public class CmsCourseController {
 
     @PostMapping("/list")
-    @ApiOperation("列表")
+    @ApiOperation("健康课堂列表")
     @ApiOperationSupport(params = @DynamicParameters(properties = {
-    @DynamicParameter(name = "categoryCode", value = "分类",example = "F02"),
-    @DynamicParameter(name = "name", value = "课程名称",example = "专家教您如何守护孩子脊柱健康"),
-    @DynamicParameter(name = "isHot", value = "是否热门",example = "0"),
-    @DynamicParameter(name = "status", value = "是否发布",example = "1"),
+                @DynamicParameter(name = "categoryCode", value = "分类",example = "F02"),
+                @DynamicParameter(name = "name", value = "课程名称",example = "专家教您如何守护孩子脊柱健康"),
+                @DynamicParameter(name = "isHot", value = "是否热门(0:否 1:是 )",example = "0"),
+                @DynamicParameter(name = "status", value = "是否发布(0:否 1:是 )",example = "0"),
     }))
-    public Result<HongRuPage<CmsCourse>> queryPageList(@RequestBody JSONObject searchObj) {
+    public Result<HongRuPage<CmsCourse>> queryCoursePageList(@RequestBody JSONObject searchObj) {
         return Result.OK(EbeanUtil.pageList(searchObj, CmsCourse.class));
     }
 
@@ -76,7 +78,7 @@ public class CmsCourseController {
     @PostMapping(value="/sortNo")
     public Result<?> sortNo(@RequestBody SortNoDto sortNoDto) {
         EbeanUtil.sortNo(sortNoDto,CmsCourse.class);
-    return Result.OK();
+        return Result.OK();
     }
 
 

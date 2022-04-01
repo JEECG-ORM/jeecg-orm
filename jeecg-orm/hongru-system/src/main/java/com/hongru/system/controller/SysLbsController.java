@@ -2,6 +2,7 @@ package com.hongru.system.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hongru.ebean.StatusDto;
+import com.hongru.ebean.SortNoDto;
 import com.hongru.ebean.EbeanUtil;
 import com.hongru.ebean.HongRuPage;
 import com.hongru.system.entity.SysLbs;
@@ -13,6 +14,8 @@ import io.swagger.annotations.ApiOperation;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
+import springfox.documentation.annotations.ApiIgnore;
+
 /**
 * @Description
 * @Copyright (c) 1998-2022 北京新鸿儒世纪网络技术有限公司 All Rights Reserved.
@@ -26,16 +29,16 @@ import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
 @RestController
 @RequestMapping("/sys/lbs")
 @Slf4j
-@Api(tags = "位置服务管理")
+@ApiIgnore
 public class SysLbsController {
 
     @PostMapping("/list")
-    @ApiOperation("列表")
+    @ApiOperation("位置服务列表")
     @ApiOperationSupport(params = @DynamicParameters(properties = {
-    @DynamicParameter(name = "name", value = "项目名称",example = "北京"),
-    @DynamicParameter(name = "status", value = "状态",example = "1"),
+                @DynamicParameter(name = "name", value = "项目名称",example = "北京"),
+                @DynamicParameter(name = "status", value = "状态",example = "1"),
     }))
-    public Result<HongRuPage<SysLbs>> queryPageList(@RequestBody JSONObject searchObj) {
+    public Result<HongRuPage<SysLbs>> queryLbsPageList(@RequestBody JSONObject searchObj) {
         return Result.OK(EbeanUtil.pageList(searchObj, SysLbs.class));
     }
 
@@ -60,13 +63,19 @@ public class SysLbsController {
     }
     @DeleteMapping(value = "/deleteBatch")
     public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
-        String[] idArr = ids.split(",");
         EbeanUtil.deleteBatch(ids, SysLbs.class);
         return Result.OK("批量删除成功");
     }
-    @PostMapping(value="/status")
-    public Result<?> status(@RequestBody StatusDto statusDto) {
-        EbeanUtil.status(statusDto,SysLbs.class);
+
+    @PostMapping(value="/field/{field}")
+    public Result<?> field(@PathVariable String field, @RequestBody StatusDto statusDto) {
+        EbeanUtil.field(field,statusDto,SysLbs.class);
+        return Result.OK();
+    }
+
+    @PostMapping(value="/sortNo")
+    public Result<?> sortNo(@RequestBody SortNoDto sortNoDto) {
+        EbeanUtil.sortNo(sortNoDto,SysLbs.class);
         return Result.OK();
     }
 

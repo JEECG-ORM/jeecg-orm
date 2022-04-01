@@ -14,6 +14,8 @@ import io.swagger.annotations.ApiOperation;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
+import springfox.documentation.annotations.ApiIgnore;
+
 /**
 * @Description
 * @Copyright (c) 1998-2022 北京新鸿儒世纪网络技术有限公司 All Rights Reserved.
@@ -27,14 +29,14 @@ import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
 @RestController
 @RequestMapping("/cms/course/apply")
 @Slf4j
-@Api(tags = "健康课堂报名信息管理")
+@ApiIgnore
 public class CmsCourseApplyController {
 
     @PostMapping("/list")
-    @ApiOperation("列表")
+    @ApiOperation("健康课堂报名信息列表")
     @ApiOperationSupport(params = @DynamicParameters(properties = {
     }))
-    public Result<HongRuPage<CmsCourseApply>> queryPageList(@RequestBody JSONObject searchObj) {
+    public Result<HongRuPage<CmsCourseApply>> queryCourseApplyPageList(@RequestBody JSONObject searchObj) {
         return Result.OK(EbeanUtil.pageList(searchObj, CmsCourseApply.class));
     }
 
@@ -72,7 +74,7 @@ public class CmsCourseApplyController {
     @PostMapping(value="/sortNo")
     public Result<?> sortNo(@RequestBody SortNoDto sortNoDto) {
         EbeanUtil.sortNo(sortNoDto,CmsCourseApply.class);
-    return Result.OK();
+        return Result.OK();
     }
 
 

@@ -134,11 +134,7 @@ public class CodeGenerateUtils {
         generateFileByTemplate(templateName, indexVueFile);
     }
 
-    public static String captureName(String name) {
-        char[] cs = name.toCharArray();
-        cs[0] -= 32;
-        return String.valueOf(cs);
-    }
+
 
     /**
      * 生成实体对象Entity.java文件

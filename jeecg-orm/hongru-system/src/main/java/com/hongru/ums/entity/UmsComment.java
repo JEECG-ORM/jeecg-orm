@@ -30,29 +30,29 @@ import com.hongru.aspect.annotation.Dict;
 public class UmsComment extends HongRuEntity {
 
 
-    @ApiModelProperty(value = "会员ID",example = "")
+    @ApiModelProperty(value = "会员ID",example = "",readOnly = true)
     private String memberId;
 
-    @ApiModelProperty(value = "父评论ID",example = "")
+    @ApiModelProperty(value = "父评论ID",example = "",readOnly = true)
     private String commentId;
 
-    @ApiModelProperty(value = "评论数据ID",example = "")
+    @ApiModelProperty(value = "评论数据ID",example = "",readOnly = true)
     private String sourceId;
 
-    @ApiModelProperty(value = "评论类型(UmsDynamic:动态 CmsContent:内容 )",example = "UmsDynamic")
+    @ApiModelProperty(value = "评论类型(UmsDynamic:动态 CmsContent:内容 )",example = "UmsDynamic",readOnly = true)
     @Dict(dicCode = "comment_type")
     private String type;
 
-    @ApiModelProperty(value = "评论内容",example = "")
+    @ApiModelProperty(value = "评论内容",example = "",readOnly = true)
     private String content;
 
     @ApiModelProperty(value = "点赞数",example = "",readOnly = true)
     private Integer likeNum;
 
-    @ApiModelProperty(value = "评论数",example = "")
+    @ApiModelProperty(value = "评论数",example = "",readOnly = true)
     private Integer commentNum;
 
-    @ApiModelProperty(value = "状态(-1:审核未通过 1:审核通过 0:待审核 )",example = "-1")
+    @ApiModelProperty(value = "状态(-1:审核未通过 1:审核通过 0:待审核 )",example = "-1",readOnly = true)
     @Dict(dicCode = "audit_status")
     private Integer status;
 
@@ -75,6 +75,15 @@ public class UmsComment extends HongRuEntity {
         }
         if(null==this.content){
         this.content="";
+        }
+        if(null==this.likeNum){
+        this.likeNum=0;
+        }
+        if(null==this.commentNum){
+        this.commentNum=0;
+        }
+        if(null==this.status){
+        this.status=1;
         }
         super.save();
     }

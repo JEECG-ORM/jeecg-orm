@@ -28,15 +28,20 @@ import com.hongru.aspect.annotation.Dict;
 @ApiModel("健康课堂报名信息对象")
 public class CmsCourseApply extends HongRuEntity {
 
+
     @ApiModelProperty(value = "健康课堂ID",example = "")
     private String courseId;
+
     @ApiModelProperty(value = "姓名",example = "")
     private String name;
+
     @ApiModelProperty(value = "年龄",example = "")
     private String age;
-    @ApiModelProperty(value = "性别",example = "")
+
+    @ApiModelProperty(value = "性别(1:男 0:未知 2:女 )",example = "1")
     @Dict(dicCode = "sex")
     private String sex;
+
     @ApiModelProperty(value = "手机号",example = "")
     private String phone;
 
