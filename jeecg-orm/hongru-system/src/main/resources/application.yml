@@ -32,9 +32,9 @@ datasource:
     databaseUrl: jdbc:mysql://rm-2zedl411b1b103595ho.mysql.rds.aliyuncs.com/bishu?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=GMT%2B8&useSSL=false
     databaseDriver: com.mysql.cj.jdbc.Driver
   prod:
-    username: root
-    password: b8a34402a2c08ed7
-    databaseUrl: jdbc:mysql://192.168.2.12/bishu?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=GMT%2B8&useSSL=false
+    username: jeecg-orm
+    password: saGDFBYpybkPMprT
+    databaseUrl: jdbc:mysql://127.0.0.1/jeecg-orm?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=GMT%2B8&useSSL=false
     databaseDriver: com.mysql.cj.jdbc.Driver
 knife4j:
   #开启增强配置
