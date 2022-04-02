@@ -25,7 +25,7 @@ ebean:
     packages: com.hongru
   cacheWarmingDelay: -1
 datasource:
-  default: test
+  default: ${active}
   test:
     username: salter
     password: Xiaoshudian123456
