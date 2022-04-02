@@ -84,14 +84,18 @@ public class GenTable extends HongRuEntity {
     private List<GenTableColumn> tableColumnList;
 
     @Transient
-    private List<GenTable> subTableList=new ArrayList<>();
-
+    private List<GenTable> subTableList = new ArrayList<>();
 
 
     @Override
     public void save() {
+        String tablePrefix = this.getTableName().split("_")[0];
         String className = StringUtil.underline2Camel(this.getTableName(), true);
+        this.setTableColumnList(null);
+        this.setPackageName(packageName + "." + tablePrefix);
+        this.setModuleName(moduleName);
         this.setClassName(className);
+        this.setDePrefixClassName(className.replace(StringUtil.captureName(tablePrefix), ""));
         super.save();
     }
 }
