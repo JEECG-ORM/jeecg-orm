@@ -64,6 +64,9 @@
             </a>
             <a-menu slot="overlay">
               <a-menu-item>
+                    <a @click="handlePe(record)">身体检测</a>
+              </a-menu-item>
+              <a-menu-item>
                 <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
                   <a>删除</a>
                 </a-popconfirm>
@@ -77,6 +80,7 @@
         </div>
         <!-- table区域-end -->
         <member-modal ref="modalForm" @ok="modalFormOk"></member-modal>
+        <pe-list ref="PeList"></pe-list>
 
 
     </a-card>
@@ -89,11 +93,13 @@
     import {queryColumnList} from '@/api/api'
     import {JeecgListMixin} from '@/mixins/JeecgListMixin'
     import MemberModal from './MemberModal'
+    import PeList from '../pe/PeList'
     export default {
         name: "MemberList",
         mixins: [JeecgListMixin],
         components: {
             MemberModal,
+            PeList,
         },
         data() {
             return {
@@ -157,6 +163,9 @@
                     this.loading = false
                 })
             },
+            handlePe: function(record){
+                this.$refs.PeList.getMainId(record.id);
+            }
         }
 
 

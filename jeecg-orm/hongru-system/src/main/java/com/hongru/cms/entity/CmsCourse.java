@@ -30,6 +30,7 @@ public class CmsCourse extends HongRuEntity {
 
 
     @ApiModelProperty(value = "分类",example = "F02")
+    @Dict(dicCode = "code",dictTable ="sys_category",dicText = "name")
     private String categoryCode;
 
     @ApiModelProperty(value = "课程名称",example = "专家教您如何守护孩子脊柱健康")

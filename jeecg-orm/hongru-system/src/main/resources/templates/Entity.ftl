@@ -28,14 +28,19 @@ import com.hongru.aspect.annotation.Dict;
 @ApiModel("${tableComment}对象")
 public class ${className} extends HongRuEntity {
 
-<#if tableColumnList?exists>
+<#if tableColumnList??>
     <#list tableColumnList as model>
         <#if model.columnName!= 'id'&&model.columnName!= 'sort_no'&&model.columnName!= 'create_by'&&model.columnName!= 'create_time'&&model.columnName!= 'update_by'&&model.columnName!= 'update_time'&&model.columnName!= 'deleted'>
             <#if (model.javaType != 'Date') >
 
-        <#if model.dict??>
-    @ApiModelProperty(value = "${model.columnComment}(<#list model.dict.dictItems as dictItem>${dictItem.itemValue}:${dictItem.itemText} </#list>)",example = "${model.dict.dictItems[0].itemValue}"<#if !model.isInsert>,readOnly = true</#if>)
-    @Dict(dicCode = "${model.dictCode}"<#if (model.dictTable != '') > ,dictTable ="${dictTable}",dicText = "${dictText}"</#if>)
+        <#if model.dictCode?default("")?trim?length gt 1>
+            <#if model.dictTable?default("")?trim?length gt 1>
+    @ApiModelProperty(value = "${model.columnComment}",example = "${model.columnExample}"<#if !model.isInsert>,readOnly = true</#if>)
+    @Dict(dicCode = "${model.dictCode}",dictTable ="${model.dictTable}",dicText = "${model.dictText}")
+            <#else>
+    @ApiModelProperty(value = "${model.columnComment}(<#if model.dict??><#list model.dict.dictItems as dictItem>${dictItem.itemValue}:${dictItem.itemText} </#list>)",example = "${model.dict.dictItems[0].itemValue}"</#if><#if !model.isInsert>,readOnly = true</#if>)
+    @Dict(dicCode = "${model.dictCode}")
+            </#if>
         <#else>
     @ApiModelProperty(value = "${model.columnComment}",example = "${model.columnExample}"<#if !model.isInsert>,readOnly = true</#if>)
         </#if>

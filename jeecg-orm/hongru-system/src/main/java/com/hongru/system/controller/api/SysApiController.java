@@ -78,7 +78,7 @@ public class SysApiController {
      * @param request
      * @return
      */
-    @PostMapping(value = "/commomn/upload")
+    @PostMapping(value = "/common/upload")
     @ApiOperation("文件上传")
     public Result<?> upload(HttpServletRequest request) {
         Result<?> result = new Result<>();

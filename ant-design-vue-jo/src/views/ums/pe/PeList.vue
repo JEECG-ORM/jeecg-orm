@@ -1,5 +1,13 @@
 <template>
-        <a-card :bordered="false">
+        <j-modal
+            title="身体检测"
+            :visible="visible"
+            :fullscreen.sync="fullscreen"
+            @close="close"
+            @cancel="close"
+            :footer="footer"
+    >
+    <a-card :bordered="false">
         <!-- 查询区域 -->
         <div class="table-page-search-wrapper">
             <a-form layout="inline" @keyup.enter.native="searchQuery">
@@ -64,9 +72,6 @@
             </a>
             <a-menu slot="overlay">
               <a-menu-item>
-                    <a @click="handleCourseApply(record)">健康课堂报名信息</a>
-              </a-menu-item>
-              <a-menu-item>
                 <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
                   <a>删除</a>
                 </a-popconfirm>
@@ -74,22 +79,19 @@
             </a-menu>
           </a-dropdown>
         </span>
-        <span slot="isHot_switch" slot-scope="text, record">
-            <a-switch checked-children="否" un-checked-children="是" v-model="record.isHot"  @change="(checked)=>handleField('isHot',checked,record.id)"></a-switch>
-        </span>
         <span slot="status_switch" slot-scope="text, record">
-            <a-switch checked-children="否" un-checked-children="是" v-model="record.status"  @change="(checked)=>handleField('status',checked,record.id)"></a-switch>
+            <a-switch checked-children="关闭" un-checked-children="开启" v-model="record.status"  @change="(checked)=>handleField('status',checked,record.id)"></a-switch>
         </span>
 
 
             </a-table>
         </div>
         <!-- table区域-end -->
-        <course-modal ref="modalForm" @ok="modalFormOk"></course-modal>
-        <course-apply-list ref="CourseApplyList"></course-apply-list>
+        <pe-modal ref="modalForm" @ok="modalFormOk"></pe-modal>
 
 
     </a-card>
+        </j-modal>
 
 
 </template>
@@ -98,33 +100,40 @@
     import { getAction, postAction } from '@api/manage'
     import {queryColumnList} from '@/api/api'
     import {JeecgListMixin} from '@/mixins/JeecgListMixin'
-    import CourseModal from './CourseModal'
-    import CourseApplyList from '../course/CourseApplyList'
+    import PeModal from './PeModal'
     export default {
-        name: "CourseList",
+        name: "PeList",
         mixins: [JeecgListMixin],
         components: {
-            CourseModal,
-            CourseApplyList,
+            PeModal,
         },
         data() {
             return {
+                visible:false,
+                footer:false,
+                fullscreen:true,
                 queryParam: {},
                 queryColumns: [],
                 columns: [],
                 url: {
-                    list: "/cms/course/list",
-                    delete: "/cms/course/delete",
-                    field: "/cms/course/field",
+                    list: "/ums/pe/list",
+                    delete: "/ums/pe/delete",
+                    field: "/ums/pe/field",
                 }
             }
         },
         created(){
-            this.loadColumn();
         },
         methods:{
+            close() {
+                this.visible = false;
+            },
+            getMainId(mainId){
+                this.visible=true;
+                this.loadColumn();
+            },
             loadColumn() {
-                queryColumnList({ tableId: "4cdf92a7357e4d8095a9464516a391df",pageNo:1,pageSize:100,order:"asc",column:"sortNo" }).then(res => {
+                queryColumnList({ tableId: "3b82f12257534d8db9d05e66fa69bc99",pageNo:1,pageSize:100,order:"asc",column:"sortNo" }).then(res => {
                     if (res.success) {
                         this.columns = []
                         let columns = res.result.records
@@ -169,9 +178,10 @@
                     this.loading = false
                 })
             },
-            handleCourseApply: function(record){
-                this.$refs.CourseApplyList.getMainId(record.id);
-            }
+            oncreateTimeChange: function (value, dateString) {
+                this.queryParam.createTime_begin=dateString[0];
+                this.queryParam.createTime_end=dateString[1];
+            },
         }
 
 

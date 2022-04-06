@@ -2,6 +2,11 @@ import { getAction, deleteAction, putAction, postAction, httpAction } from '@/ap
 import Vue from 'vue'
 import {UI_CACHE_DB_DICT_DATA } from "@/store/mutation-types"
 
+//身体检测管理
+const addPe = (params)=>postAction("/ums/pe/add",params);
+const editPe = (params)=>postAction("/ums/pe/edit",params);
+
+
 //健康课堂管理
 const addCourse = (params)=>postAction("/cms/course/add",params);
 const editCourse = (params)=>postAction("/cms/course/edit",params);
@@ -119,6 +124,8 @@ export const transitRESTful = {
 }
 
 export {
+  addPe,
+  editPe,
   addCourse,
   editCourse,
   addContent,

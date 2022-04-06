@@ -62,7 +62,7 @@ public class EbeanUtil {
     }
 
     public static <T> T findCodeByLevel(Integer level, Class<T> tClass) {
-        T t = DB.find(tClass).where().eq("level", level).orderBy("code desc").setMaxRows(1).findOne();
+        T t = DB.find(tClass).where().eq("level", level).orderBy("createTime desc").setMaxRows(1).findOne();
         return t;
     }
 

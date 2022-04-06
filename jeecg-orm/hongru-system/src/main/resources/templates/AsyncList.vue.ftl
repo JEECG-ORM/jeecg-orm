@@ -118,7 +118,7 @@
     import {JeecgListMixin} from '@/mixins/JeecgListMixin'
     import ${dePrefixClassName}Modal from './${dePrefixClassName}Modal'
     <#list subTableList as subModel>
-    import ${subModel.dePrefixClassName}List from './${subModel.dePrefixClassName}List'
+    import ${subModel.dePrefixClassName}List from '../${subModel.tableName?split("_")[1]}/${subModel.dePrefixClassName}List'
     </#list>
     export default {
         name: "${dePrefixClassName}List",
