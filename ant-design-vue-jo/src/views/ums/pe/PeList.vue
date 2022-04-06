@@ -1,6 +1,6 @@
 <template>
         <j-modal
-            title="身体检测"
+            title="身体检测报告"
             :visible="visible"
             :fullscreen.sync="fullscreen"
             @close="close"
@@ -12,7 +12,7 @@
         <div class="table-page-search-wrapper">
             <a-form layout="inline" @keyup.enter.native="searchQuery">
                 <a-row :gutter="24">
-                    <a-col :md="6" :sm="12" v-for="item in queryColumns" v-if="item.isQuery" :key="item.id">
+                    <a-col :md="6" :sm="12" v-for="item in queryColumns" v-if="item.isQuery&&item.htmlType!='date'" :key="item.id">
                         <a-form-item :label="item.columnComment"  v-if="item.htmlType==='switch'">
                             <a-select v-model="queryParam[item.javaField]" placeholder="全部">
                                 <a-select-option value="">全部</a-select-option>
@@ -26,8 +26,17 @@
                         <a-form-item :label="item.columnComment" v-if="item.htmlType==='cat_tree'">
                             <j-category-select v-model="queryParam[item.javaField]" :pcode="item.columnExample" />
                         </a-form-item>
-
                     </a-col>
+                            <a-col :md="6" :sm="12">
+                                <a-form-item label="创建时间">
+                                    <a-range-picker
+                                            format="YYYY-MM-DD"
+                                            :placeholder="['开始时间', '结束时间']"
+                                            @change="oncreateTimeChange"
+                                    />
+                                </a-form-item>
+                            </a-col>
+
                     <a-col :md="6" :sm="12">
              <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
                <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
@@ -130,7 +139,12 @@
             },
             getMainId(mainId){
                 this.visible=true;
+                this.queryParam.memberId=mainId;
                 this.loadColumn();
+            },
+            handleAdd: function () {
+                this.$refs.modalForm.add(this.queryParam.memberId);
+                this.$refs.modalForm.title = "添加身体检测报告";
             },
             loadColumn() {
                 queryColumnList({ tableId: "3b82f12257534d8db9d05e66fa69bc99",pageNo:1,pageSize:100,order:"asc",column:"sortNo" }).then(res => {
@@ -182,6 +196,8 @@
                 this.queryParam.createTime_begin=dateString[0];
                 this.queryParam.createTime_end=dateString[1];
             },
+
+
         }
 
 

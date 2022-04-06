@@ -104,16 +104,16 @@
                     this.areaData = new Area(this.$Jpcaa);
                 }
             },
-            add() {
+            add(mainId) {
                 this.refresh();
-                this.edit();
+                this.edit({memberId:mainId});
             },
             edit(record) {
                 this.loadColumn(record);
             },
             refresh() {
-                this.categoryId = ""
                 this.name = ""
+                this.categoryId = ""
                 this.file = ""
             },
             close() {

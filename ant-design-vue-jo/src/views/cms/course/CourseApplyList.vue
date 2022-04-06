@@ -26,6 +26,12 @@
                         <a-form-item :label="item.columnComment" v-if="item.htmlType==='cat_tree'">
                             <j-category-select v-model="queryParam[item.javaField]" :pcode="item.columnExample" />
                         </a-form-item>
+                        <a-form-item :label="item.columnComment" v-if="item.htmlType==='date'">
+                            <a-range-picker
+                                    format="YYYY-MM-DD"
+                                    :placeholder="['开始时间', '结束时间']"
+                            />
+                        </a-form-item>
 
                     </a-col>
                     <a-col :md="6" :sm="12">

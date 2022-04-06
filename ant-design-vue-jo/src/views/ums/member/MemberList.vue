@@ -4,7 +4,7 @@
         <div class="table-page-search-wrapper">
             <a-form layout="inline" @keyup.enter.native="searchQuery">
                 <a-row :gutter="24">
-                    <a-col :md="6" :sm="12" v-for="item in queryColumns" v-if="item.isQuery" :key="item.id">
+                    <a-col :md="6" :sm="12" v-for="item in queryColumns" v-if="item.isQuery&&item.htmlType!='date'" :key="item.id">
                         <a-form-item :label="item.columnComment"  v-if="item.htmlType==='switch'">
                             <a-select v-model="queryParam[item.javaField]" placeholder="全部">
                                 <a-select-option value="">全部</a-select-option>
@@ -18,8 +18,8 @@
                         <a-form-item :label="item.columnComment" v-if="item.htmlType==='cat_tree'">
                             <j-category-select v-model="queryParam[item.javaField]" :pcode="item.columnExample" />
                         </a-form-item>
-
                     </a-col>
+
                     <a-col :md="6" :sm="12">
              <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
                <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
@@ -64,7 +64,7 @@
             </a>
             <a-menu slot="overlay">
               <a-menu-item>
-                    <a @click="handlePe(record)">身体检测</a>
+                    <a @click="handlePe(record)">身体检测报告</a>
               </a-menu-item>
               <a-menu-item>
                 <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
@@ -166,6 +166,8 @@
             handlePe: function(record){
                 this.$refs.PeList.getMainId(record.id);
             }
+
+
         }
 
 

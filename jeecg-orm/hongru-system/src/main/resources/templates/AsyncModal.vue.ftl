@@ -104,9 +104,17 @@
                     this.areaData = new Area(this.$Jpcaa);
                 }
             },
-            add() {
+            add(mainId) {
                 this.refresh();
+                <#if tableType==3>
+                <#list tableColumnList as model>
+                <#if model.mainTable?default("")?trim?length gt 1>
+                this.edit({${model.javaField}:mainId});
+                </#if>
+                </#list>
+                <#else>
                 this.edit();
+                </#if>
             },
             edit(record) {
                 this.loadColumn(record);

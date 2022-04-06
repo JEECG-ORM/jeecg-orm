@@ -14,7 +14,7 @@
         <div class="table-page-search-wrapper">
             <a-form layout="inline" @keyup.enter.native="searchQuery">
                 <a-row :gutter="24">
-                    <a-col :md="6" :sm="12" v-for="item in queryColumns" v-if="item.isQuery" :key="item.id">
+                    <a-col :md="6" :sm="12" v-for="item in queryColumns" v-if="item.isQuery&&item.htmlType!='date'" :key="item.id">
                         <a-form-item :label="item.columnComment"  v-if="item.htmlType==='switch'">
                             <a-select v-model="queryParam[item.javaField]" placeholder="全部">
                                 <a-select-option value="">全部</a-select-option>
@@ -28,8 +28,21 @@
                         <a-form-item :label="item.columnComment" v-if="item.htmlType==='cat_tree'">
                             <j-category-select v-model="queryParam[item.javaField]" :pcode="item.columnExample" />
                         </a-form-item>
-
                     </a-col>
+                    <#list tableColumnList as model>
+                        <#if model.isQuery&&model.htmlType="date">
+                            <a-col :md="6" :sm="12">
+                                <a-form-item label="${model.columnComment}">
+                                    <a-range-picker
+                                            format="YYYY-MM-DD"
+                                            :placeholder="['开始时间', '结束时间']"
+                                            @change="on${model.javaField}Change"
+                                    />
+                                </a-form-item>
+                            </a-col>
+                        </#if>
+                    </#list>
+
                     <a-col :md="6" :sm="12">
              <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
                <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
@@ -159,11 +172,19 @@
             getMainId(mainId){
                 this.visible=true;
                 <#list tableColumnList as model>
-                <#if model.mainTable??>
+                <#if model.mainTable?default("")?trim?length gt 1>
                 this.queryParam.${model.javaField}=mainId;
                 </#if>
                 </#list>
                 this.loadColumn();
+            },
+            handleAdd: function () {
+                <#list tableColumnList as model>
+                <#if model.mainTable?default("")?trim?length gt 1>
+                this.$refs.modalForm.add(this.queryParam.${model.javaField});
+                </#if>
+                </#list>
+                this.$refs.modalForm.title = "添加${tableComment}";
             },
             </#if>
             loadColumn() {
@@ -225,6 +246,8 @@
             },
             </#if>
             </#list>
+
+
         }
 
 

@@ -230,6 +230,20 @@
             defaultValue: '',
           },
           {
+            title: '主表名',
+            key: 'mainTable',
+            width: '8%',
+            type: FormTypes.input,
+            defaultValue: '',
+          },
+          {
+            title: '主表字段',
+            key: 'mainField',
+            width: '8%',
+            type: FormTypes.input,
+            defaultValue: '',
+          },
+          {
             title: '操作',
             key: 'action',
             // width: '8%',

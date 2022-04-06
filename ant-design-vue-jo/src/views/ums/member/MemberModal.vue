@@ -104,7 +104,7 @@
                     this.areaData = new Area(this.$Jpcaa);
                 }
             },
-            add() {
+            add(mainId) {
                 this.refresh();
                 this.edit();
             },
