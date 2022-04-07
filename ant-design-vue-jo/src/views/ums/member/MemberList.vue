@@ -33,10 +33,6 @@
                 </a-row>
             </a-form>
         </div>
-        <!-- 操作按钮区域 -->
-        <div class="table-operator" style="border-top: 5px">
-            <a-button @click="handleAdd" type="primary" icon="plus">添加</a-button>
-        </div>
         <!-- table区域-begin -->
         <div>
             <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
@@ -56,9 +52,9 @@
                     :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
                     @change="handleTableChange">
         <span slot="action" slot-scope="text, record">
-          <a @click="handleEdit(record)">编辑</a>
+          <a @click="handleDetail(record.id)">详情</a>
           <a-divider type="vertical"/>
-          <a-dropdown>
+         <!-- <a-dropdown>
             <a class="ant-dropdown-link">
               更多 <a-icon type="down"/>
             </a>
@@ -72,17 +68,12 @@
                 </a-popconfirm>
               </a-menu-item>
             </a-menu>
-          </a-dropdown>
+          </a-dropdown>-->
         </span>
-
-
             </a-table>
         </div>
         <!-- table区域-end -->
-        <member-modal ref="modalForm" @ok="modalFormOk"></member-modal>
-        <pe-list ref="PeList"></pe-list>
-
-
+        <member-detail ref="modalDetail" ></member-detail>
     </a-card>
 
 
@@ -92,14 +83,12 @@
     import { getAction, postAction } from '@api/manage'
     import {queryColumnList} from '@/api/api'
     import {JeecgListMixin} from '@/mixins/JeecgListMixin'
-    import MemberModal from './MemberModal'
-    import PeList from '../pe/PeList'
+    import MemberDetail from './MemberDetail'
     export default {
         name: "MemberList",
         mixins: [JeecgListMixin],
         components: {
-            MemberModal,
-            PeList,
+          MemberDetail
         },
         data() {
             return {
@@ -117,6 +106,10 @@
             this.loadColumn();
         },
         methods:{
+          handleDetail(id){
+            this.$refs.modalDetail.show(id);
+            this.$refs.modalDetail.title="会员详情";
+          },
             loadColumn() {
                 queryColumnList({ tableId: "188aafe4192c4898adaec4a0433c2b0d",pageNo:1,pageSize:100,order:"asc",column:"sortNo" }).then(res => {
                     if (res.success) {
@@ -165,7 +158,7 @@
             },
             handlePe: function(record){
                 this.$refs.PeList.getMainId(record.id);
-            }
+            },
 
 
         }

@@ -28,6 +28,9 @@
                         <a-form-item :label="item.columnComment" v-if="item.htmlType==='cat_tree'">
                             <j-category-select v-model="queryParam[item.javaField]" :pcode="item.columnExample" />
                         </a-form-item>
+                        <a-form-model-item :label="item.columnComment" v-if="item.htmlType==='select'" >
+                            <j-dict-select-tag v-model="queryParam[item.javaField]"  :dictCode="item.dictCode" :placeholder="'请选择'+item.columnComment"/>
+                        </a-form-model-item>
                     </a-col>
                     <#list tableColumnList as model>
                         <#if model.isQuery&&model.htmlType="date">
@@ -201,7 +204,8 @@
                                 }
                                 let c = {
                                     title: columns[i].columnComment,
-                                    align: 'center'
+                                    align: 'center',
+                                    dataIndex: '' + dataIndex + ''
                                 }
                                 if (columns[i].htmlType === 'input' || columns[i].htmlType === 'date') {
                                     c.dataIndex= '' + dataIndex + ''
@@ -209,9 +213,6 @@
                                 if (columns[i].htmlType === 'switch') {
                                     c.dataIndex= columns[i].javaField+'_switch';
                                     c.scopedSlots={customRender:columns[i].javaField+ '_switch'};
-                                }
-                                if (columns[i].htmlType === 'cat_tree') {
-                                    c.dataIndex= '' + dataIndex + ''
                                 }
                                 if (columns[i].fieldLength !== 0) {
                                     c.width = columns[i].fieldLength
@@ -236,7 +237,7 @@
             <#list subTableList as subModel>
             handle${subModel.dePrefixClassName}: function(record){
                 this.$refs.${subModel.dePrefixClassName}List.getMainId(record.id);
-            }
+            },
             </#list>
             <#list tableColumnList as model>
             <#if model.isQuery&&model.htmlType="date">

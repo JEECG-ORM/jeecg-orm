@@ -1,5 +1,12 @@
 <template>
-
+        <j-modal
+            title="报告内容"
+            :visible="visible"
+            :fullscreen.sync="fullscreen"
+            @close="close"
+            @cancel="close"
+            :footer="footer"
+    >
     <a-card :bordered="false">
         <!-- 查询区域 -->
         <div class="table-page-search-wrapper">
@@ -19,16 +26,10 @@
                         <a-form-item :label="item.columnComment" v-if="item.htmlType==='cat_tree'">
                             <j-category-select v-model="queryParam[item.javaField]" :pcode="item.columnExample" />
                         </a-form-item>
+                        <a-form-model-item :label="item.columnComment" v-if="item.htmlType==='select'" >
+                            <j-dict-select-tag v-model="queryParam[item.javaField]"  :dictCode="item.dictCode" :placeholder="'请选择'+item.columnComment"/>
+                        </a-form-model-item>
                     </a-col>
-                            <a-col :md="6" :sm="12">
-                                <a-form-item label="创建时间">
-                                    <a-range-picker
-                                            format="YYYY-MM-DD"
-                                            :placeholder="['开始时间', '结束时间']"
-                                            @change="oncreateTimeChange"
-                                    />
-                                </a-form-item>
-                            </a-col>
 
                     <a-col :md="6" :sm="12">
              <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
@@ -81,18 +82,16 @@
             </a-menu>
           </a-dropdown>
         </span>
-        <span slot="status_switch" slot-scope="text, record">
-            <a-switch checked-children="关闭" un-checked-children="开启" v-model="record.status"  @change="(checked)=>handleField('status',checked,record.id)"></a-switch>
-        </span>
 
 
             </a-table>
         </div>
         <!-- table区域-end -->
-        <pe-modal ref="modalForm" @ok="modalFormOk"></pe-modal>
+        <mr-content-modal ref="modalForm" @ok="modalFormOk"></mr-content-modal>
 
 
     </a-card>
+        </j-modal>
 
 
 </template>
@@ -101,12 +100,12 @@
     import { getAction, postAction } from '@api/manage'
     import {queryColumnList} from '@/api/api'
     import {JeecgListMixin} from '@/mixins/JeecgListMixin'
-    import PeModal from './PeModal'
+    import MrContentModal from './MrContentModal'
     export default {
-        name: "PeList",
+        name: "MrContentList",
         mixins: [JeecgListMixin],
         components: {
-            PeModal,
+            MrContentModal,
         },
         data() {
             return {
@@ -117,9 +116,9 @@
                 queryColumns: [],
                 columns: [],
                 url: {
-                    list: "/ums/pe/list",
-                    delete: "/ums/pe/delete",
-                    field: "/ums/pe/field",
+                    list: "/ums/mr/content/list",
+                    delete: "/ums/mr/content/delete",
+                    field: "/ums/mr/content/field",
                 }
             }
         },
@@ -131,15 +130,15 @@
             },
             getMainId(mainId){
                 this.visible=true;
-                this.queryParam.memberId=mainId;
+                this.queryParam.mrId=mainId;
                 this.loadColumn();
             },
             handleAdd: function () {
-                this.$refs.modalForm.add(this.queryParam.memberId);
-                this.$refs.modalForm.title = "添加身体检测报告";
+                this.$refs.modalForm.add(this.queryParam.mrId);
+                this.$refs.modalForm.title = "添加报告内容";
             },
             loadColumn() {
-                queryColumnList({ tableId: "3b82f12257534d8db9d05e66fa69bc99",pageNo:1,pageSize:100,order:"asc",column:"sortNo" }).then(res => {
+                queryColumnList({ tableId: "26f7fae198664611a417758c470eb51a",pageNo:1,pageSize:100,order:"asc",column:"sortNo" }).then(res => {
                     if (res.success) {
                         this.columns = []
                         let columns = res.result.records
@@ -152,7 +151,8 @@
                                 }
                                 let c = {
                                     title: columns[i].columnComment,
-                                    align: 'center'
+                                    align: 'center',
+                                    dataIndex: '' + dataIndex + ''
                                 }
                                 if (columns[i].htmlType === 'input' || columns[i].htmlType === 'date') {
                                     c.dataIndex= '' + dataIndex + ''
@@ -160,9 +160,6 @@
                                 if (columns[i].htmlType === 'switch') {
                                     c.dataIndex= columns[i].javaField+'_switch';
                                     c.scopedSlots={customRender:columns[i].javaField+ '_switch'};
-                                }
-                                if (columns[i].htmlType === 'cat_tree') {
-                                    c.dataIndex= '' + dataIndex + ''
                                 }
                                 if (columns[i].fieldLength !== 0) {
                                     c.width = columns[i].fieldLength
@@ -183,10 +180,6 @@
                     // 这里是无论成功或失败都会执行的方法，在这里关闭loading
                     this.loading = false
                 })
-            },
-            oncreateTimeChange: function (value, dateString) {
-                this.queryParam.createTime_begin=dateString[0];
-                this.queryParam.createTime_end=dateString[1];
             },
 
 

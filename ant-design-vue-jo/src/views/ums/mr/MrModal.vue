@@ -45,10 +45,10 @@
     </a-drawer>
 </template>
 <script>
-    import {add${dePrefixClassName}, edit${dePrefixClassName},duplicateCheck,queryColumnList} from '@/api/api'
+    import {addMr, editMr,duplicateCheck,queryColumnList} from '@/api/api'
     import Area from '@/components/_util/Area'
     export default {
-        name: "${dePrefixClassName}Modal",
+        name: "MrModal",
         data() {
             return {
                 modalWidth: 800,
@@ -78,7 +78,7 @@
         methods: {
             loadColumn(record) {
                 let that = this
-                queryColumnList({ tableId: "${id}",pageNo:1,pageSize:100,order:"asc",column:"sortNo" }).then(res => {
+                queryColumnList({ tableId: "9da2106d542e485494a7b7fd079bbb5b",pageNo:1,pageSize:100,order:"asc",column:"sortNo" }).then(res => {
                     if (res.success) {
                         that.columns = res.result.records
                         for(let i =0;i<that.columns.length;i++){
@@ -107,25 +107,15 @@
             },
             add(mainId) {
                 this.refresh();
-                <#if tableType==3>
-                <#list tableColumnList as model>
-                <#if model.mainTable?default("")?trim?length gt 1>
-                this.edit({${model.javaField}:mainId});
-                </#if>
-                </#list>
-                <#else>
-                this.edit();
-                </#if>
+                this.edit({memberId:mainId});
             },
             edit(record) {
                 this.loadColumn(record);
             },
             refresh() {
-                <#list tableColumnList as model>
-                <#if model.isInsert>
-                this.${model.javaField} = ""
-                </#if>
-                </#list>
+                this.name = ""
+                this.categoryCode = ""
+                this.type = ""
             },
             close() {
                 this.$emit('close');
@@ -137,15 +127,6 @@
                 this.close()
             },
             handleSubmit() {
-                <#list tableColumnList as model>
-                    <#if model.htmlType=="pca">
-                let pca=this.areaData.getText(this.model.areaCode);
-                let pcaArr=pca.split("/");
-                this.model.province=pcaArr[0];
-                this.model.city=pcaArr[1];
-                this.model.area=pcaArr[2];
-                    </#if>
-                </#list>
                 const that = this;
                 // 触发表单验证
                 this.$refs.form.validate(valid => {
@@ -153,9 +134,9 @@
                         that.confirmLoading = true;
                         let obj;
                         if (!this.model.id) {
-                            obj = add${dePrefixClassName}(this.model);
+                            obj = addMr(this.model);
                         } else {
-                            obj = edit${dePrefixClassName}(this.model);
+                            obj = editMr(this.model);
                         }
                         obj.then((res) => {
                             if (res.success) {
@@ -191,25 +172,6 @@
                     this.drawerWidth = 700
                 }
             },
-            <#list tableColumnList as model>
-                <#if model.isUnique>
-            validate${model.javaField}(rule, value, callback){
-                var params = {
-                    tableName: '${tableName}',
-                    fieldName: '${model.javaField}',
-                    fieldVal: value,
-                    dataId: this.model.id
-                };
-                duplicateCheck(params).then((res) => {
-                    if (res.success) {
-                        callback()
-                    } else {
-                        callback("${model.columnComment}已存在!")
-                    }
-                })
-            },
-                </#if>
-            </#list>
 
         }
 

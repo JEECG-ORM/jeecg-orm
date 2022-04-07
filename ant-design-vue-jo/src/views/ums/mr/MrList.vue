@@ -1,6 +1,5 @@
 <template>
-
-    <a-card :bordered="false">
+        <a-card :bordered="false">
         <!-- 查询区域 -->
         <div class="table-page-search-wrapper">
             <a-form layout="inline" @keyup.enter.native="searchQuery">
@@ -19,16 +18,10 @@
                         <a-form-item :label="item.columnComment" v-if="item.htmlType==='cat_tree'">
                             <j-category-select v-model="queryParam[item.javaField]" :pcode="item.columnExample" />
                         </a-form-item>
+                        <a-form-model-item :label="item.columnComment" v-if="item.htmlType==='select'" >
+                            <j-dict-select-tag v-model="queryParam[item.javaField]"  :dictCode="item.dictCode" :placeholder="'请选择'+item.columnComment"/>
+                        </a-form-model-item>
                     </a-col>
-                            <a-col :md="6" :sm="12">
-                                <a-form-item label="创建时间">
-                                    <a-range-picker
-                                            format="YYYY-MM-DD"
-                                            :placeholder="['开始时间', '结束时间']"
-                                            @change="oncreateTimeChange"
-                                    />
-                                </a-form-item>
-                            </a-col>
 
                     <a-col :md="6" :sm="12">
              <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
@@ -74,6 +67,9 @@
             </a>
             <a-menu slot="overlay">
               <a-menu-item>
+                    <a @click="handleMrContent(record)">报告内容</a>
+              </a-menu-item>
+              <a-menu-item>
                 <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
                   <a>删除</a>
                 </a-popconfirm>
@@ -81,15 +77,13 @@
             </a-menu>
           </a-dropdown>
         </span>
-        <span slot="status_switch" slot-scope="text, record">
-            <a-switch checked-children="关闭" un-checked-children="开启" v-model="record.status"  @change="(checked)=>handleField('status',checked,record.id)"></a-switch>
-        </span>
 
 
             </a-table>
         </div>
         <!-- table区域-end -->
-        <pe-modal ref="modalForm" @ok="modalFormOk"></pe-modal>
+        <mr-modal ref="modalForm" @ok="modalFormOk"></mr-modal>
+        <mr-content-list ref="MrContentList"></mr-content-list>
 
 
     </a-card>
@@ -101,45 +95,38 @@
     import { getAction, postAction } from '@api/manage'
     import {queryColumnList} from '@/api/api'
     import {JeecgListMixin} from '@/mixins/JeecgListMixin'
-    import PeModal from './PeModal'
+    import MrModal from './MrModal'
+    import MrContentList from '../mr/MrContentList'
     export default {
-        name: "PeList",
+        name: "MrList",
         mixins: [JeecgListMixin],
         components: {
-            PeModal,
+            MrModal,
+            MrContentList,
         },
         data() {
             return {
-                visible:false,
-                footer:false,
-                fullscreen:true,
                 queryParam: {},
                 queryColumns: [],
                 columns: [],
                 url: {
-                    list: "/ums/pe/list",
-                    delete: "/ums/pe/delete",
-                    field: "/ums/pe/field",
+                    list: "/ums/mr/list",
+                    delete: "/ums/mr/delete",
+                    field: "/ums/mr/field",
                 }
             }
         },
-        created(){
-        },
         methods:{
-            close() {
-                this.visible = false;
-            },
-            getMainId(mainId){
-                this.visible=true;
-                this.queryParam.memberId=mainId;
-                this.loadColumn();
-            },
-            handleAdd: function () {
-                this.$refs.modalForm.add(this.queryParam.memberId);
-                this.$refs.modalForm.title = "添加身体检测报告";
-            },
+          getMainId(mainId){
+            this.queryParam.memberId=mainId;
+            this.loadColumn();
+          },
+          handleAdd: function () {
+            this.$refs.modalForm.add(this.queryParam.memberId);
+            this.$refs.modalForm.title = "添加医学检测报告";
+          },
             loadColumn() {
-                queryColumnList({ tableId: "3b82f12257534d8db9d05e66fa69bc99",pageNo:1,pageSize:100,order:"asc",column:"sortNo" }).then(res => {
+                queryColumnList({ tableId: "9da2106d542e485494a7b7fd079bbb5b",pageNo:1,pageSize:100,order:"asc",column:"sortNo" }).then(res => {
                     if (res.success) {
                         this.columns = []
                         let columns = res.result.records
@@ -152,7 +139,8 @@
                                 }
                                 let c = {
                                     title: columns[i].columnComment,
-                                    align: 'center'
+                                    align: 'center',
+                                    dataIndex: '' + dataIndex + ''
                                 }
                                 if (columns[i].htmlType === 'input' || columns[i].htmlType === 'date') {
                                     c.dataIndex= '' + dataIndex + ''
@@ -160,9 +148,6 @@
                                 if (columns[i].htmlType === 'switch') {
                                     c.dataIndex= columns[i].javaField+'_switch';
                                     c.scopedSlots={customRender:columns[i].javaField+ '_switch'};
-                                }
-                                if (columns[i].htmlType === 'cat_tree') {
-                                    c.dataIndex= '' + dataIndex + ''
                                 }
                                 if (columns[i].fieldLength !== 0) {
                                     c.width = columns[i].fieldLength
@@ -184,9 +169,8 @@
                     this.loading = false
                 })
             },
-            oncreateTimeChange: function (value, dateString) {
-                this.queryParam.createTime_begin=dateString[0];
-                this.queryParam.createTime_end=dateString[1];
+            handleMrContent: function(record){
+                this.$refs.MrContentList.getMainId(record.id);
             },
 
 
